@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for p in persons %}
+<div class="row">
+  <div class="col-1"><p>{{ p.id }}</p></div>
+  <div class="col"><p>{{ p }}</p></div>
+  <div class="col"><a href="{% url 'register:person' p.id  %}" class="p"> szczegóły </a></div>
+</div>
+
+{% endfor %}
+
+{% endblock %}

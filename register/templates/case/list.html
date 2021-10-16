@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for p in cases %}
+<div class="row">
+  <div class="col-1"><p>{{ p.pk }}</p></div>
+  <div class="col"><p>{{ p }}</p></div>
+  <div class="col"><a href="{% url 'register:case' p.id  %}" class="p"> szczegóły </a></div>
+</div>
+
+{% endfor %}
+
+{% endblock %}
