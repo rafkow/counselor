@@ -21,6 +21,7 @@ class Family(models.Model):
         return f"{self.name}"
 
 
+# komornik
 class Bailiff(models.Model):
     name = models.CharField(max_length=60)
 
@@ -30,16 +31,17 @@ class Bailiff(models.Model):
 
 class Case(models.Model):
     # ('save value in DB', 'display on selected list')
-    TYPE = (('eviction ', 'eksmisja'), ('murder', 'morderstwo'))
+    TYPE = (('eviction', 'eksmisja'), ('murder', 'morderstwo'))
 
-    signature = models.CharField(max_length=20, null=True, blank=True, unique=True,
+    signature = models.CharField(max_length=30, null=True, blank=True, unique=True,
                                  verbose_name='sygnatura kancelarii'
                                  )
-    type = models.CharField(max_length=60, choices=TYPE, null=True, blank=True, verbose_name='typ sprawy')
+    persons = models.ManyToManyField(Person)
+    type = models.CharField(max_length=60, choices=TYPE, null=True, blank=True, verbose_name='typ sprawy', default=None)
     result = models.CharField(max_length=60, blank=True, null=True, verbose_name='wynik sprawy')
-    create_date = models.DateTimeField(auto_now_add=True)
-    costs = models.FloatField(null=True)
-    bailiff = models.ForeignKey(Bailiff, null=True, blank=True, on_delete=models.SET_NULL)
+    create_date = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    costs = models.FloatField(null=True, blank=True)
+    bailiff = models.ForeignKey(Bailiff, null=True, blank=True, on_delete=models.SET_NULL, default=None)
 
     def __str__(self):
         return f"{self.signature}"

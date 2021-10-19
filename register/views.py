@@ -1,7 +1,5 @@
 from datetime import datetime, date
-
-import requests
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.views import generic
 from django.http import HttpResponse
@@ -20,6 +18,12 @@ def home(request):
 
 
 def create(request):
+    if request.method == 'POST':
+        form = PersonCreateFrom(request.POST)
+        if form.is_valid():
+            new = form.save()
+            return redirect('register:person', pk=new.pk)
+        return redirect('register:persons')
     if request.method == 'GET':
         form = PersonCreateFrom()
         context = {
@@ -33,7 +37,7 @@ def update(request, pk):
         form = PersonCreateFrom(request.POST)
         if form.is_valid():
             new = form.save()
-            return person(request, new.pk)
+            return redirect("person", pk=new.pk)
     if request.method == 'GET':
         form = PersonCreateFrom()
         if pk:
@@ -47,14 +51,23 @@ def update(request, pk):
 
 
 def person(request, pk=0):
-    print(pk)
     if request.method == 'GET':
         if pk:
             find = Person.objects.get(pk=pk)
             ff = FamilyCreateForm()
+            begin_of_month = date.today().replace(day=1)
+            gen = Case.objects.filter(create_date__gte=begin_of_month).count()+1
+            cases = Case.objects.filter(persons__pk=pk)
+            new_case_form = CaseForm(request.POST,
+                    initial={'signature': f'M/{datetime.now().strftime("%y/%m")}/{gen}',
+                             'persons': find,
+                             }
+                    )
             context = {
                 'person': find,
-                'family': ff
+                'family': ff,
+                'new_case': new_case_form,
+                'cases': cases,
             }
             return render(request, 'person/selected.html', context)
         else:
@@ -66,7 +79,12 @@ def person(request, pk=0):
 
 def case(request, pk=0):
     if request.method == 'POST':
-        return render(request, 'home.html')
+        form = CaseForm(request.POST)
+        if form.is_valid():
+            new = form.save()
+            person_id = new.persons[0].pk if new.persons[0].pk else 0
+            return redirect("register:person", pk=person_id)
+        return redirect("register:person", pk=0)
     if request.method == 'GET':
         if pk:
             selected = Case.objects.get(pk=pk)
@@ -76,7 +94,7 @@ def case(request, pk=0):
             return render(request, 'case/selected.html', context)
 
     begin_of_month = date.today().replace(day=1)
-    gen = Case.objects.filter(create_date__gte=begin_of_month).count()
+    gen = Case.objects.filter(create_date__gte=begin_of_month).count()+1
     form = CaseForm(request.POST,
                     initial={'signature': f'M/{datetime.now().strftime("%y/%m")}/{gen}'}
                     )

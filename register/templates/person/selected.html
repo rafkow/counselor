@@ -4,46 +4,67 @@
 
 <h3>hej - {{ person }}</h3>
 
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  Launch demo modal
-</button>
+<div class="row">
+    <div class="col-5">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Rodzina</h5>
+                <form>
+                    {% csrf_token %}
+                    {% for field in family %}
+                    <div class="col">
+                        {{ field.label }}
+                        {{ field }}
+                    </div>
+                    {% endfor %}
+                </form>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Nowa sprawa</h5>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
+                <form action="{% url 'register:case' %}" method="POST">
+                    {% csrf_token %}
+                    {{ new_case }}
+                    <button type="submit" class="btn btn-primary my-3">Utwórz</button>
+                </form>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
-<div class="col-5">
-<div class="card">
-    <div class="card-body">
-    <h5 class="card-title">Rodzina</h5>
 
-      <form>
-      {% csrf_token %}
-        {% for field in family %}
-          <div class="col">
-            {{ field.label }}
-            {{ field }}
-          </div>
-        {% endfor %}
-      </form>
+    <div class="col-7">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Sprawy bierzące</h5>
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Sygnatura</th>
+                        <th scope="col">Typ</th>
+                        <th scope="col">Koszty</th>
+                        <th scope="col">Start Date</th>
+                        <th scope="col">Komornik</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for case in cases %}
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>{{ case.signature }}</td>
+                        <td>{{ case.type }}</td>
+                        <td>{{ case.costs }}</td>
+                        <td>{{ case.create_date }}</td>
+                        <td>{{ case.bailiff }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
     </div>
-</div>
 </div>
 {% endblock %}
 
