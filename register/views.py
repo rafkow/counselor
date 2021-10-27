@@ -17,6 +17,16 @@ def home(request):
     return render(request, 'person/list.html', context)
 
 
+def family(request):
+    if request.method == 'POST':
+        form = FamilyCreateForm(request.POST)
+        if form.is_valid():
+            person_id = form.cleaned_data.get('persons').first().id
+            form.save()
+            return redirect("register:person", pk=person_id)
+    return redirect("person", pk=0)
+
+
 def create(request):
     if request.method == 'POST':
         form = PersonCreateFrom(request.POST)
@@ -54,15 +64,23 @@ def person(request, pk=0):
     if request.method == 'GET':
         if pk:
             find = Person.objects.get(pk=pk)
-            ff = FamilyCreateForm()
+            ff = Family.objects.filter(persons=find)
+            if ff.count() < 1:
+                ff = FamilyCreateForm(
+                    initial={
+                        'name': f'{find.last_name} - {find.address}',
+                        'persons': find
+                    }
+                )
             begin_of_month = date.today().replace(day=1)
             gen = Case.objects.filter(create_date__gte=begin_of_month).count()+1
             cases = Case.objects.filter(persons__pk=pk)
-            new_case_form = CaseForm(request.POST,
-                    initial={'signature': f'M/{datetime.now().strftime("%y/%m")}/{gen}',
-                             'persons': find,
-                             }
-                    )
+            new_case_form = CaseForm(
+                initial={
+                    'signature': f'M/{datetime.now().strftime("%y/%m")}/{gen}',
+                    'persons': find
+                }
+            )
             context = {
                 'person': find,
                 'family': ff,
@@ -81,8 +99,8 @@ def case(request, pk=0):
     if request.method == 'POST':
         form = CaseForm(request.POST)
         if form.is_valid():
-            new = form.save()
-            person_id = new.persons[0].pk if new.persons[0].pk else 0
+            person_id = form.cleaned_data.get('persons').first().id
+            form.save()
             return redirect("register:person", pk=person_id)
         return redirect("register:person", pk=0)
     if request.method == 'GET':

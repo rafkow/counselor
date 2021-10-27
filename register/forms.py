@@ -22,11 +22,6 @@ class CaseForm(forms.ModelForm):
             'persons': SelectMultiple(attrs={'class': 'form-control'}),
         }
 
-    # def __init__(self, data, **kwargs):
-    #     initial = kwargs.get('initial', {})
-    #     data = {**initial, **data}
-    #     super().__init__(data, **kwargs)
-
 
 class FamilyCreateForm(forms.ModelForm):
     class Meta:

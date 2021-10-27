@@ -12,5 +12,5 @@ urlpatterns = [
     path('case/', views.case, name='case'),
     path('case/<int:pk>', views.case, name='case'),
     path('home/', views.home, name='home'),
-
+    path('register/family', views.family, name='family'),
 ]

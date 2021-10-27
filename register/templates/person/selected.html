@@ -8,8 +8,8 @@
     <div class="col-5">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Rodzina</h5>
-                <form>
+                <h5 class="card-title">Rodzina <i class="ri-add-fill"></i> </h5>
+                <form action="{% url 'register:family' %}" method="POST">
                     {% csrf_token %}
                     {% for field in family %}
                     <div class="col">
@@ -17,6 +17,7 @@
                         {{ field }}
                     </div>
                     {% endfor %}
+                    <button type="submit" class="btn btn-primary my-3">Utwórz</button>
                 </form>
             </div>
         </div>
