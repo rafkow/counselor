@@ -33,4 +33,7 @@ class FamilyCreateForm(forms.ModelForm):
         }
 
 
+class ImportDataForm(forms.Form):
+    data = forms.CharField(widget=Textarea(attrs={"rows": 20, 'class': 'form-control'}))
+
 

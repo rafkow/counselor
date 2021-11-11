@@ -13,4 +13,5 @@ urlpatterns = [
     path('case/<int:pk>', views.case, name='case'),
     path('home/', views.home, name='home'),
     path('register/family', views.family, name='family'),
+    path('import', views.data_import, name='data_import')
 ]

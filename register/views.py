@@ -121,3 +121,13 @@ def case(request, pk=0):
     }
     return render(request, 'case/create.html', context)
 
+
+def data_import(request):
+    context = {
+        'form': ImportDataForm
+    }
+    return render(request, 'refactor/data_import.html', context)
+
+
+
+

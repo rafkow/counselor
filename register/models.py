@@ -21,6 +21,13 @@ class Family(models.Model):
         return f"{self.name}"
 
 
+class Company(models.Model):
+    name = models.CharField(max_length=200, null=True, blank=True, verbose_name='pełna nazwa podmiotu gospodarczego')
+    nip = models.IntegerField(null=True, blank=True, verbose_name='nip')
+    description = models.CharField(max_length=300, null=True, blank=True, verbose_name='notatki')
+    date_created = models.DateTimeField(auto_now_add=True)
+
+
 # komornik
 class Bailiff(models.Model):
     name = models.CharField(max_length=60)
@@ -37,6 +44,7 @@ class Case(models.Model):
                                  verbose_name='sygnatura kancelarii'
                                  )
     persons = models.ManyToManyField(Person)
+    companies = models.ManyToManyField(Company)
     type = models.CharField(max_length=60, choices=TYPE, null=True, blank=True, verbose_name='typ sprawy', default=None)
     result = models.CharField(max_length=60, blank=True, null=True, verbose_name='wynik sprawy')
     create_date = models.DateTimeField(auto_now_add=True, null=True, blank=True)
