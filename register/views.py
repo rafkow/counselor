@@ -123,6 +123,24 @@ def case(request, pk=0):
 
 
 def data_import(request):
+    if request.method == 'POST':
+        form = ImportDataForm(request.POST)
+        if form.is_valid():
+            rows = form.cleaned_data.get('data').split(sep='\n')
+            for row in rows:
+                parts = row.split(sep='\t', maxsplit=2)
+                if parts[0].upper().find('SP. Z O.O.') > 0:
+                    continue
+                else:
+                    if len(parts[0].split(sep=',')) == 1:
+                        person_data = parts[0].split(sep=' ', maxsplit=1)
+                        if len(person_data) == 2:
+                            p = Person(last_name=person_data[0], first_name=person_data[1])
+                            p.save()
+                            c = Case(signature=parts[1], description=parts[2])
+                            c.save()
+                            c.persons.add(p)
+                            c.save()
     context = {
         'form': ImportDataForm
     }

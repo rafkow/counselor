@@ -12,7 +12,7 @@ class PersonCreateFrom(forms.ModelForm):
 class CaseForm(forms.ModelForm):
     class Meta:
         model = Case
-        exclude = ['date_created', 'result']
+        exclude = ['date_created', 'result', 'companies']
 
         widgets = {
             'signature': TextInput(attrs={'class': 'form-control'}),

@@ -50,6 +50,7 @@ class Case(models.Model):
     create_date = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     costs = models.FloatField(null=True, blank=True)
     bailiff = models.ForeignKey(Bailiff, null=True, blank=True, on_delete=models.SET_NULL, default=None)
+    description = models.CharField(max_length=250, null=True, blank=True, verbose_name='opis', default=None)
 
     def __str__(self):
         return f"{self.signature}"
