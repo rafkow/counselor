@@ -4,6 +4,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.views import generic
 from django.http import HttpResponse
 from .forms import *
+from .models import *
+
+from .entities.extract_person import extract_person
 
 
 def index(request):
@@ -106,15 +109,43 @@ def case(request, pk=0):
     if request.method == 'GET':
         if pk:
             selected = Case.objects.get(pk=pk)
+            people = Person.objects.filter(case__pk=selected.pk)
+            # refund = Refund.objects.filter(case__pk=selected.pk)
+            # if not refund:
+            refund = RefundCreateForm(initial={
+                    'case': selected
+                })
             context = {
-                'case': selected
+                'case': selected,
+                'people': people,
+                'refund': refund,
             }
             return render(request, 'case/selected.html', context)
 
+    context = {
+        'cases': Case.objects.all()
+    }
+    return render(request, 'case/list.html', context)
+
+
+def bailiff(request):
+    if request.method == 'POST':
+        form = BailiffCreateForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+    context = {
+        'form': BailiffCreateForm,
+        'bailiffs': Bailiff.objects.all()
+    }
+    return render(request, 'bailiff/bailiff.html', context)
+
+
+def new_case(request):
     begin_of_month = date.today().replace(day=1)
-    gen = Case.objects.filter(create_date__gte=begin_of_month).count()+1
+    gen = Case.objects.filter(create_date__gte=begin_of_month).count() + 1
     form = CaseForm(request.POST,
-                    initial={'signature': f'M/{datetime.now().strftime("%y/%m")}/{gen}'}
+                    initial={'signature': f'M/{datetime.now().strftime("%y")}/{gen}'}
                     )
     context = {
         'form': form
@@ -122,30 +153,55 @@ def case(request, pk=0):
     return render(request, 'case/create.html', context)
 
 
+def assign_persons_to_case(persons, cases):
+    c = Case.objects.filter(signature=cases.signature).first()
+    if not c:
+        c = cases
+        c.save()
+
+    for per in persons:
+        p = Person.objects.filter(last_name=per.last_name, first_name=per.first_name).first()
+        if not p:
+            p = per
+            p.save()
+        c.persons.add(p)
+    c.save()
+
+
 def data_import(request):
+    unassigned = ''
     if request.method == 'POST':
         form = ImportDataForm(request.POST)
         if form.is_valid():
-            rows = form.cleaned_data.get('data').split(sep='\n')
+            rows = form.cleaned_data.get('data').split(sep='\r\n')
             for row in rows:
                 parts = row.split(sep='\t', maxsplit=2)
-                if parts[0].upper().find('SP. Z O.O.') > 0:
+                if len(parts) < 3:
+                    unassigned += 'za krótkie ' + row + '\r\n'
                     continue
+                c = Case(signature=parts[1], description=parts[2])
+                if parts[0].upper().find('SP. Z O.O.') > 0:
+                    unassigned += row + '\r\n'
                 else:
                     if len(parts[0].split(sep=',')) == 1:
                         person_data = parts[0].split(sep=' ', maxsplit=1)
                         if len(person_data) == 2:
                             p = Person(last_name=person_data[0], first_name=person_data[1])
-                            p.save()
-                            c = Case(signature=parts[1], description=parts[2])
-                            c.save()
-                            c.persons.add(p)
-                            c.save()
+                            assign_persons_to_case((p,), c)
+                    else:
+                        people = extract_person(parts[0])
+                        assign_persons_to_case(people, c)
+
+
     context = {
-        'form': ImportDataForm
+        'form': ImportDataForm(initial={'data': unassigned})
     }
     return render(request, 'refactor/data_import.html', context)
 
 
+def flush_data(request):
+    Case.objects.all().delete()
+    Person.objects.all().delete()
+    return HttpResponse("Ucunięto wszystkie rekordy")
 
 

@@ -2,7 +2,60 @@
 
 {% block content %}
 
-<p>hej - {{ case }}</p>
+ <div class="card">
+      <div class="card-body">
+          <h5 class="card-title">Sprawy bierzące</h5>
 
+          <table class="table">
+              <thead>
+              <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Sygnatura</th>
+                  <th scope="col">Typ</th>
+                  <th scope="col">Koszty</th>
+                  <th scope="col">Start Date</th>
+                  <th scope="col">Komornik</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                  <th scope="row">1</th>
+                  <td>{{ case.signature }}</td>
+                  <td>{{ case.type }}</td>
+                  <td>{{ case.costs }}</td>
+                  <td>{{ case.create_date }}</td>
+                  <td>{{ case.bailiff }}</td>
+              </tr>
+          </table>
+      </div>
+  </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Przypisani do sprawy <i class="ri-add-fill"></i> </h5>
+    {% for person in people %}
+        <h5>{{ person }}</h5>
+    {% endfor %}
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title"> Zadeklaruj koszty sprawy <i class="ri-add-fill"></i> </h5>
+<form action="#" method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                    {% for field in refund %}
+                    <div class="col-md-2">
+                        {{ field.label }}
+                        {{ field }}
+                    </div>
+                    {% endfor %}
+                    </div>
+                    <button type="submit" class="btn btn-primary my-3">Utwórz</button>
+                </form>
+    </div>
+</div>
 
 {% endblock %}
