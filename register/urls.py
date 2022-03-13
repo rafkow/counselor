@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-
+from .api import person
 
 app_name = 'register'
 urlpatterns = [
@@ -18,4 +18,6 @@ urlpatterns = [
     path('bailiff', views.bailiff, name='bailiff'),
     path('company', views.company, name='company'),
     path('company/<int:pk>', views.company, name='company'),
+
+    path('api/person', person, name='api_person'),
 ]

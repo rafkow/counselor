@@ -2,6 +2,8 @@
 
 {% block content %}
 
+{% load l10n %}
+
  <div class="card">
       <div class="card-body">
           <h5 class="card-title">Sprawy bierzące</h5>
@@ -23,7 +25,7 @@
                   <td>{{ case.signature }}</td>
                   <td>{{ case.type }}</td>
                   <td>{{ case.costs }}</td>
-                  <td>{{ case.create_date }}</td>
+                  <td>{{ case.create_date|localize }}</td>
                   <td>{{ case.bailiff }}</td>
               </tr>
           </table>
@@ -33,7 +35,11 @@
 
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title">Przypisani do sprawy <i class="ri-add-fill"></i> </h5>
+        <h5 class="card-title">Przypisani do sprawy </h5>
+        <div class="row">
+            <div class="col-6">pozwani</div>
+            <div class="col-6">powód</div>
+        </div>
     {% for person in people %}
         <h5>{{ person }}</h5>
     {% endfor %}

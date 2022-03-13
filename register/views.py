@@ -218,8 +218,8 @@ def company(request, pk=0):
     if request.method == 'GET':
         if pk > 0:
             context = {
-                'company': Company.objects.filter(company__pk=pk).first(),
-                'cases' : Case.objects.filter(Q(accused_companies__pk=pk) | Q(prosecutor_companies__pk=pk))
+                'company': Company.objects.filter(pk=pk).first(),
+                'cases': Case.objects.filter(Q(accused_companies__pk=pk) | Q(prosecutor_companies__pk=pk))
             }
             return render(request, 'company/selected.html', context)
     context = {

@@ -42,7 +42,7 @@
     <thead>
     <tr>
         <th>numer</th>
-        <th>osoba</th>
+        <th>nazwa firmy</th>
         <th></th>
     </tr>
     </thead>
@@ -50,7 +50,7 @@
     {% for p in companies %}
     <tr>
         <td><p>{{ p.id }}</p></td>
-        <td><p>{{ p }}</p></td>
+        <td><p>{{ p.name }}</p></td>
         <td><a href="{% url 'register:company' p.id  %}" class="p"> szczegóły </a></td>
     </tr>
     {% endfor %}
