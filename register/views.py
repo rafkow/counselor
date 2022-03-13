@@ -1,12 +1,15 @@
 from datetime import datetime, date
+from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.views import generic
 from django.http import HttpResponse
 from .forms import *
 from .models import *
+from payments.forms import RefundCreateForm
+from payments.models import Refund
 
-from .entities.extract_person import extract_person
+from .entities import extract_person, signatures
 
 
 def index(request):
@@ -66,6 +69,7 @@ def update(request, pk):
 def person(request, pk=0):
     if request.method == 'GET':
         if pk:
+
             find = Person.objects.get(pk=pk)
             ff = Family.objects.filter(persons=find)
             if ff.count() < 1:
@@ -75,13 +79,10 @@ def person(request, pk=0):
                         'persons': find
                     }
                 )
-            begin_of_month = date.today().replace(day=1)
-            gen = Case.objects.filter(create_date__gte=begin_of_month).count()+1
-            cases = Case.objects.filter(persons__pk=pk)
+            cases = Case.objects.filter(Q(accused_persons__pk=pk) | Q(prosecutor_persons__pk=pk))
             new_case_form = CaseForm(
                 initial={
-                    'signature': f'M/{datetime.now().strftime("%y/%m")}/{gen}',
-                    'persons': find
+                    'accused_persons': find
                 }
             )
             context = {
@@ -89,6 +90,7 @@ def person(request, pk=0):
                 'family': ff,
                 'new_case': new_case_form,
                 'cases': cases,
+                'next_signatures': signatures.next_signature(),
             }
             return render(request, 'person/selected.html', context)
         else:
@@ -102,23 +104,25 @@ def case(request, pk=0):
     if request.method == 'POST':
         form = CaseForm(request.POST)
         if form.is_valid():
-            person_id = form.cleaned_data.get('persons').first().id
+            person_id = form.cleaned_data.get('accused_persons').first().id
             form.save()
             return redirect("register:person", pk=person_id)
         return redirect("register:person", pk=0)
     if request.method == 'GET':
         if pk:
             selected = Case.objects.get(pk=pk)
-            people = Person.objects.filter(case__pk=selected.pk)
-            # refund = Refund.objects.filter(case__pk=selected.pk)
-            # if not refund:
-            refund = RefundCreateForm(initial={
-                    'case': selected
-                })
+            people = Person.objects.filter(accused_persons__pk=selected.pk)
+            refund = Refund.objects.filter(case__pk=pk).first()
+            refund_form = None
+            if not refund:
+                refund_form = RefundCreateForm(initial={
+                        'case': selected
+                    })
             context = {
                 'case': selected,
                 'people': people,
                 'refund': refund,
+                'refund_form': refund_form,
             }
             return render(request, 'case/selected.html', context)
 

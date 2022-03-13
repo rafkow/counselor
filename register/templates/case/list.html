@@ -2,13 +2,42 @@
 
 {% block content %}
 
-{% for p in cases %}
-<div class="row">
-  <div class="col-1"><p>{{ p.pk }}</p></div>
-  <div class="col"><p>{{ p }}</p></div>
-  <div class="col"><a href="{% url 'register:case' p.id  %}" class="p"> szczegóły </a></div>
-</div>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.css"/>
 
+<table id="table" class="table">
+  <thead>
+  <tr>
+    <th>numer</th> <th>sygnatura</th> <th></th>
+  </tr>
+  </thead>
+  <tbody>
+{% for p in cases %}
+<tr>
+  <td><p>{{ p.id }}</p></td> <td><p>{{ p }}</p></td>
+  <td><a href="{% url 'register:case' p.id  %}" class="p"> szczegóły </a></td>
+</tr>
 {% endfor %}
+  </tbody>
+</table>
+
+
 
 {% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.js"></script>
+<script>
+  $(document).ready( function () {
+    oTable = $('#table').DataTable({
+      "dom": '<"top"l>rt<"bottom"ip><"clear">',
+      searching: true,
+      "paging":   true,
+      "ordering": true,
+      "info":     true
+    });
+    $('#search-input').keyup(function(){
+          oTable.search($(this).val()).draw() ;
+    })
+  });
+</script>
+{% endblock  %}

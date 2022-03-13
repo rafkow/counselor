@@ -1,6 +1,22 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block navigration %}
+<div class="pagetitle">
+  <div class="row">
+    <div class="col-3"><h1 class="d-inline">Lista pozwanych</h1></div>
+    <div class="col text-center">
+      <a class="btn btn-outline-primary" href="{% url 'register:create' %}">Nowa osoba <i class="bi bi-person-plus"></i></a></div>
+  </div>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Rejestr</a></li>
+          <li class="breadcrumb-item active">pozwani</li>
+        </ol>
+      </nav>
+</div>
+{% endblock  %}
+
 {% block content %}
 
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.css"/>
@@ -8,20 +24,15 @@
 <table id="table" class="table">
   <thead>
   <tr>
-    <th>numer</th>
-    <th>osoba</th>
-    <th></th>
+    <th>numer</th> <th>osoba</th> <th></th>
   </tr>
   </thead>
   <tbody>
 {% for p in persons %}
-
 <tr>
-  <td><p>{{ p.id }}</p></td>
-  <td><p>{{ p }}</p></td>
+  <td><p>{{ p.id }}</p></td> <td><p>{{ p }}</p></td>
   <td><a href="{% url 'register:person' p.id  %}" class="p"> szczegóły </a></td>
 </tr>
-
 {% endfor %}
   </tbody>
 </table>

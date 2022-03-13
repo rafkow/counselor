@@ -40,22 +40,31 @@
     </div>
 </div>
 
+{% if refund_form %}
 <div class="card">
     <div class="card-body">
         <h5 class="card-title"> Zadeklaruj koszty sprawy <i class="ri-add-fill"></i> </h5>
-<form action="#" method="POST">
-                    {% csrf_token %}
-                    <div class="row">
-                    {% for field in refund %}
-                    <div class="col-md-2">
-                        {{ field.label }}
-                        {{ field }}
-                    </div>
-                    {% endfor %}
-                    </div>
-                    <button type="submit" class="btn btn-primary my-3">Utwórz</button>
-                </form>
+        <form action="{% url 'payments:refund' %}" method="POST">
+            {% csrf_token %}
+            <div class="row">
+            {% for field in refund_form %}
+            <div class="col-md-2">
+                {{ field.label }}
+                {{ field }}
+            </div>
+            {% endfor %}
+            </div>
+            <button type="submit" class="btn btn-primary my-3">Utwórz</button>
+        </form>
     </div>
 </div>
+{% else %}
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Koszty sprawy <i class="ri-add-fill"></i> </h5>
+        <h5>{{ refund }}</h5>
+    </div>
+</div>
+{% endif %}
 
 {% endblock %}

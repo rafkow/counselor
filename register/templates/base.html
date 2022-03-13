@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="en">
+<html lang="pl-PL">
 <head>
     <meta charset="UTF-8">
     <link rel="shortcut icon" type="image/png" href="{% static '/favicon.ico' %}"/>
@@ -15,19 +15,10 @@
     {% include 'header.html' %}
     {% include 'sidebar.html' %}
   <main id="main" class="main">
+      {% block navigration %}{% endblock  %}
 
-    <div class="pagetitle">
-      <h1>Dashboard</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item active">Dashboard</li>
-        </ol>
-      </nav>
-    </div>
     <section class="section dashboard">
-    {% block content %}
-    {% endblock  %}
+    {% block content %}{% endblock  %}
     </section>
   </main>
     {% include 'jslib.html' %}

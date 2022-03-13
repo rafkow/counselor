@@ -24,7 +24,9 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Nowa sprawa</h5>
-
+                {% for sign in next_signatures %}
+                    <span class="badge border-primary text-primary sign_val">{{ sign }}</span>
+                {% endfor %}
                 <form action="{% url 'register:case' %}" method="POST">
                     {% csrf_token %}
                     {{ new_case }}
@@ -33,7 +35,6 @@
             </div>
         </div>
     </div>
-
 
     <div class="col-7">
         <div class="card">
@@ -54,8 +55,8 @@
                     <tbody>
                     {% for case in cases %}
                     <tr>
-                        <th scope="row">1</th>
-                        <td>{{ case.signature }}</td>
+                        <th scope="row">{{ loop.index }}</th>
+                        <td><a href="{% url 'register:case' case.id %}">{{ case.signature }}</a></td>
                         <td>{{ case.type }}</td>
                         <td>{{ case.costs }}</td>
                         <td>{{ case.create_date }}</td>
@@ -67,5 +68,15 @@
         </div>
     </div>
 </div>
+
 {% endblock %}
 
+{% block scripts%}
+<script>
+$(document).ready(function(){
+  $("span").on("click", function(){
+    $('#id_signature').attr("value", $(this).text());
+  });
+});
+</script>
+{% endblock %}
