@@ -56,3 +56,13 @@ class ImportDataForm(forms.Form):
     data = forms.CharField(widget=Textarea(attrs={"rows": 20, 'class': 'form-control'}))
 
 
+class CompanyCreateForm(forms.ModelForm):
+    class Meta:
+        model = Company
+        fields = ['name', 'nip']
+        widgets = {
+            'name': TextInput(attrs={'class': 'form-control'}),
+            'nip': NumberInput(attrs={'class': 'form-control'}),
+        }
+
+

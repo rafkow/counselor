@@ -16,4 +16,6 @@ urlpatterns = [
     path('import', views.data_import, name='data_import'),
     path('flush', views.flush_data, name='flush'),
     path('bailiff', views.bailiff, name='bailiff'),
+    path('company', views.company, name='company'),
+    path('company/<int:pk>', views.company, name='company'),
 ]

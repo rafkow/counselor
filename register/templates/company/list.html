@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block navigration %}
+<div class="pagetitle">
+    <div class="row">
+        <div class="col-3"><h1 class="d-inline">Lista firm</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Rejestr</a></li>
+                    <li class="breadcrumb-item active">Firmy</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-9">
+            <form action="{% url 'register:company' %}" method="post">
+                {% csrf_token %}
+
+                <div class="row">
+                    {% for field in new_company %}
+                    <div class="col-4">
+                        {{ field.label }}
+                        {{ field }}
+                    </div>
+                    {% endfor%}
+                    <div class="col-2">
+                        Zatwierdź
+                        <button type="submit" class="btn btn-primary w-100">dodaj firmę</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock  %}
+
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.css"/>
+
+<table id="table" class="table">
+    <thead>
+    <tr>
+        <th>numer</th>
+        <th>osoba</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for p in companies %}
+    <tr>
+        <td><p>{{ p.id }}</p></td>
+        <td><p>{{ p }}</p></td>
+        <td><a href="{% url 'register:company' p.id  %}" class="p"> szczegóły </a></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.js"></script>
+<script>
+  $(document).ready( function () {
+    oTable = $('#table').DataTable({
+      "dom": '<"top"l>rt<"bottom"ip><"clear">',
+      searching: true,
+      "paging":   true,
+      "ordering": true,
+      "info":     true
+    });
+    $('#search-input').keyup(function(){
+          oTable.search($(this).val()).draw() ;
+    })
+  });
+
+
+</script>
+{% endblock  %}
+

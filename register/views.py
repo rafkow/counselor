@@ -196,7 +196,6 @@ def data_import(request):
                         people = extract_person(parts[0])
                         assign_persons_to_case(people, c)
 
-
     context = {
         'form': ImportDataForm(initial={'data': unassigned})
     }
@@ -208,4 +207,24 @@ def flush_data(request):
     Person.objects.all().delete()
     return HttpResponse("Ucunięto wszystkie rekordy")
 
+
+def company(request, pk=0):
+    if request.method == 'POST':
+        form = CompanyCreateForm(request.POST)
+        if form.is_valid():
+            new = form.save()
+            return redirect('register:company', pk=new.pk)
+
+    if request.method == 'GET':
+        if pk > 0:
+            context = {
+                'company': Company.objects.filter(company__pk=pk).first(),
+                'cases' : Case.objects.filter(Q(accused_companies__pk=pk) | Q(prosecutor_companies__pk=pk))
+            }
+            return render(request, 'company/selected.html', context)
+    context = {
+        'new_company': CompanyCreateForm(),
+        'companies': Company.objects.all()
+    }
+    return render(request, 'company/list.html', context)
 

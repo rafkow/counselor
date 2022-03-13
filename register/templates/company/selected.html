@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h3>{{ company }}</h3>
+
+<div class="row">
+    <div class="col-5">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Informacje <i class="ri-add-fill"></i> </h5>
+
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Nowa sprawa</h5>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-7">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Sprawy bierzące</h5>
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Sygnatura</th>
+                        <th scope="col">Typ</th>
+                        <th scope="col">Koszty</th>
+                        <th scope="col">Start Date</th>
+                        <th scope="col">Komornik</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for case in cases %}
+                    <tr>
+                        <th scope="row">{{ loop.index }}</th>
+                        <td><a href="{% url 'register:case' case.id %}">{{ case.signature }}</a></td>
+                        <td>{{ case.type }}</td>
+                        <td>{{ case.costs }}</td>
+                        <td>{{ case.create_date }}</td>
+                        <td>{{ case.bailiff }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts%}
+<script>
+$(document).ready(function(){
+  $("span").on("click", function(){
+    $('#id_signature').attr("value", $(this).text());
+  });
+});
+</script>
+{% endblock %}

@@ -1,6 +1,6 @@
 from django.forms import Textarea, TextInput, SelectMultiple, Select, NumberInput
 from django import forms
-from .models import *
+from payments.models import Refund, Payments
 
 
 class RefundCreateForm(forms.ModelForm):
@@ -20,7 +20,7 @@ class RefundCreateForm(forms.ModelForm):
 class PaymentCreateForm(forms.ModelForm):
     class Meta:
         model = Payments
-        field = '__all__'
+        fields = '__all__'
         widgets = {
             'create_date': TextInput(attrs={'class': 'form-control'}),
             'court_costs': NumberInput(attrs={'class': 'form-control'}),
