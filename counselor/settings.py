@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os.path
 from pathlib import Path
 
+from decouple import config
+from dj_database_url import parse as db_url
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure--=^n#r*8f**b^kaxrdhth7_2zs%23_a4c*r*$=i$ez^-)+356e'
+SECRET_KEY = config("SECRET_KEY", "q+ni)oxsd9sqlokny$nr-rr*7($pj)mc-#scvgq%fxse4zv44i")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -39,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.redirects',
     'django.contrib.sites',
+    'rest_framework',
     'register',
     'payments',
 ]
@@ -79,18 +83,11 @@ WSGI_APPLICATION = 'counselor.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    },
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME': 'conselordb',
-    #     'USER': 'prawnik',
-    #     'PASSWORD': 'Kodek$',
-    #     'HOST': '136.244.103.32',   # Or an IP Address that your DB is hosted on
-    #     'PORT': '3306',
-    # }
+    'default': config(
+        'DATABASE_URLS',
+        default=f'sqlite:///{BASE_DIR}/db.sqlite3',
+        cast=db_url
+    )
 }
 
 
@@ -116,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pl-PL'
 
 TIME_ZONE = 'UTC'
 

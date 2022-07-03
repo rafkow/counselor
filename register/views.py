@@ -1,26 +1,60 @@
 from datetime import datetime, date
 from django.db.models import Q
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, Http404, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.views import generic
 from django.http import HttpResponse
 from .forms import *
 from .models import *
-from payments.forms import RefundCreateForm
-from payments.models import Refund
+from payments.forms import RefundCreateForm, PaymentCreateForm
+from payments.models import Refund, Payments
 
 from .entities import extract_person, signatures
 
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+    return redirect("register:person", pk=0)
+    # return HttpResponse("Hello, world. You're at the polls index.")
 
 
-def home(request):
-    context = {
-        'persons': Person.objects.all()
-    }
-    return render(request, 'person/list.html', context)
+def page_not_found_view(request, exception):
+    return render(request, '404.html', status=404)
+
+
+def assign(request):
+    signature = request.GET.get('signature', None)
+    if not signature:
+        return index(request)
+    # case = get_object_or_404(Case, signature=signature)
+    case = Case.objects.filter(signature=signature).first()
+    if not case:
+        return redirect('register:case', pk=0)
+
+    accused_person = request.GET.get('accused_person', None)
+    if accused_person:
+        p = Person.objects.filter(pk=accused_person).first()
+        if p:
+            case.accused_persons.add(p)
+
+    prosecutor_person = request.GET.get('prosecutor_person', None)
+    if prosecutor_person:
+        p = Person.objects.filter(pk=prosecutor_person).first()
+        if p:
+            case.prosecutor_persons.add(p)
+
+    accused_company = request.GET.get('accused_company', None)
+    if accused_company:
+        c = Company.objects.filter(pk=accused_company).first()
+        if c:
+            case.accused_companies.add(c)
+
+    prosecutor_company = request.GET.get('prosecutor_company', None)
+    if prosecutor_company:
+        c = Company.objects.filter(pk=prosecutor_company).first()
+        if c:
+            case.prosecutor_companies.add(c)
+    case.save()
+    return redirect('register:case', pk=case.pk)
 
 
 def family(request):
@@ -69,7 +103,6 @@ def update(request, pk):
 def person(request, pk=0):
     if request.method == 'GET':
         if pk:
-
             find = Person.objects.get(pk=pk)
             ff = Family.objects.filter(persons=find)
             if ff.count() < 1:
@@ -108,24 +141,23 @@ def case(request, pk=0):
             form.save()
             return redirect("register:person", pk=person_id)
         return redirect("register:person", pk=0)
-    if request.method == 'GET':
-        if pk:
-            selected = Case.objects.get(pk=pk)
-            people = Person.objects.filter(accused_persons__pk=selected.pk)
-            refund = Refund.objects.filter(case__pk=pk).first()
-            refund_form = None
-            if not refund:
-                refund_form = RefundCreateForm(initial={
-                        'case': selected
-                    })
-            context = {
-                'case': selected,
-                'people': people,
-                'refund': refund,
-                'refund_form': refund_form,
-            }
-            return render(request, 'case/selected.html', context)
+    if request.method == 'GET' and pk:
+        context = {'case': Case.objects.get(pk=pk), 'refund': Refund.objects.filter(case__pk=pk).first()}
+        if context['refund']:
+            context['form'] = PaymentCreateForm(initial={'refund': context['refund']})
+            context['payments'] = Payments.objects.filter(refund__pk=context['refund'].pk)
+        else:
+            context['form'] = RefundCreateForm(initial={'case': context['case']})
+        return render(request, 'case/selected.html', context)
 
+    context = {
+        'cases': Case.objects.all()
+    }
+    return render(request, 'case/list.html', context)
+
+
+def case_edit(request, pk=0):
+    selected = Case.objects.get(pk=pk)
     context = {
         'cases': Case.objects.all()
     }

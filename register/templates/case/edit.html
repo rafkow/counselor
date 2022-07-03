@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load l10n %}
+
+<form action="{% url 'register:case' %}" method="POST">
+    {% csrf_token %}
+    {{ new_case }}
+<button type="submit" class="btn btn-primary my-3">Utwórz</button>
+</form>

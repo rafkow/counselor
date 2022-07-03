@@ -7,13 +7,13 @@
 <table id="table" class="table">
   <thead>
   <tr>
-    <th>numer</th> <th>sygnatura</th> <th></th>
+    <th>numer</th> <th>sygnatura</th> <th>typ sprawy</th> <th></th>
   </tr>
   </thead>
   <tbody>
 {% for p in cases %}
 <tr>
-  <td><p>{{ p.id }}</p></td> <td><p>{{ p }}</p></td>
+  <td><p>{{ p.id }}</p></td> <td><p>{{ p }}</p> <td> {{ p.get_type_display }}</td></td>
   <td><a href="{% url 'register:case' p.id  %}" class="p"> szczegóły </a></td>
 </tr>
 {% endfor %}

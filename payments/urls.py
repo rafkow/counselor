@@ -7,4 +7,7 @@ urlpatterns = [
     path('', views.home, name='index'),
     path('refund', views.refund, name='refund'),
     path('refund/<int:id>', views.refund, name='refund'),
+    path('payment', views.payment, name='payment'),
 ]
+
+
