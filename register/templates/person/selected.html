@@ -30,7 +30,7 @@
                 <form action="{% url 'register:case' %}" method="POST">
                     {% csrf_token %}
                     {{ new_case }}
-                    <button type="submit" class="btn btn-primary my-3">Utwórz</button>
+                <button type="submit" class="btn btn-primary my-3">Utwórz</button>
                 </form>
             </div>
         </div>
@@ -57,7 +57,7 @@
                     <tr>
                         <th scope="row">{{ loop.index }}</th>
                         <td><a href="{% url 'register:case' case.id %}">{{ case.signature }}</a></td>
-                        <td>{{ case.type }}</td>
+                        <td>{{ case.get_type_display }}</td>
                         <td>{{ case.costs }}</td>
                         <td>{{ case.create_date }}</td>
                         <td>{{ case.bailiff }}</td>
