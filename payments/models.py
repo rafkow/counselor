@@ -18,6 +18,7 @@ class Refund(models.Model):
         payments = self.bill.all()
         if payments:
             return sum([p.value for p in payments])
+        return 0
 
     def result(self):
         return self.amount - self.recapitulation()

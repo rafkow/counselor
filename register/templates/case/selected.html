@@ -6,8 +6,6 @@
 
  <div class="card">
       <div class="card-body">
-          <h5 class="card-title">Sprawy bierzące</h5>
-
           <table class="table">
               <thead>
               <tr>
@@ -16,7 +14,9 @@
                   <th scope="col">Typ</th>
                   <th scope="col">Koszty</th>
                   <th scope="col">Start Date</th>
+                  {% if case.bailiff %}
                   <th scope="col">Komornik</th>
+                  {% endif %}
               </tr>
               </thead>
               <tbody>
@@ -26,7 +26,9 @@
                   <td>{{ case.gat_type_display }}</td>
                   <td>{{ case.costs }}</td>
                   <td>{{ case.create_date|localize }}</td>
-                  <td>{{ case.bailiff }}</td>
+                  {% if case.bailiff %}
+                    <td>{{ case.bailiff }}</td>
+                  {% endif %}
               </tr>
           </table>
       </div>
@@ -55,7 +57,13 @@
         <div class="row mt-1">
             <div class="col">
                 {% for company in case.accused_companies.all %} <h5>{{ company }}</h5> {% endfor %}
-                {% for person in case.accused_persons.all %} <h5>{{ person }}</h5> {% endfor %}
+                {% for person in case.accused_persons.all %}
+                    <h5>{{ person }}
+                        <a href="{% url 'register:person' person.id %}">
+                            <i class="bi bi-file-earmark-person"></i>
+                        </a>
+                    </h5>
+                {% endfor %}
             </div>
             <div class="col">
                 {% for company in case.prosecutor_companies.all %} <h5>{{ company }}</h5> {% endfor %}
@@ -130,6 +138,14 @@
     </div>
 </div>
 {% endif %}
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title"> Portal sądowy </h5>
+
+    </div>
+</div>
+
 
 <!-- Modal -->
 <div class="modal fade" id="payment_modal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">

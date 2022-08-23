@@ -21,14 +21,12 @@ class PersonCreateFrom(forms.ModelForm):
 class CaseForm(forms.ModelForm):
     class Meta:
         model = Case
-        exclude = ['date_created', 'result', 'companies', 'accused_companies', 'prosecutor_persons', 'prosecutor_companies']
+        exclude = ['date_created', 'result', 'companies', 'accused_companies', 'prosecutor_persons',
+                   'prosecutor_companies', 'bailiff', 'costs', 'accused_persons']
 
         widgets = {
             'signature': TextInput(attrs={'class': 'form-control'}),
-            'costs': NumberInput(attrs={'class': 'form-control'}),
             'type': Select(attrs={'class': 'form-control'}),
-            'bailiff': Select(attrs={'class': 'form-control'}),
-            'accused_persons': SelectMultiple(attrs={'class': 'form-control'}),
             'description': Textarea(attrs={'class': 'form-control'}),
         }
 
@@ -36,7 +34,8 @@ class CaseForm(forms.ModelForm):
 class CaseEditForm(forms.ModelForm):
     class Meta:
         model = Case
-        exclude = ['date_created', 'result', 'companies', 'accused_persons', 'accused_companies', 'prosecutor_persons', 'prosecutor_companies']
+        exclude = ['date_created', 'result', 'companies',
+                   'accused_persons', 'accused_companies', 'prosecutor_persons', 'prosecutor_companies']
 
         widgets = {
             'signature': TextInput(attrs={'class': 'form-control'}),

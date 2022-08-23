@@ -32,7 +32,7 @@ class Company(models.Model):
         return f'{self.name}'
 
 
-# komornik
+# Komornik sądowy
 class Bailiff(models.Model):
     name = models.CharField(max_length=60)
 
@@ -48,7 +48,8 @@ class Case(models.Model):
     signature = models.CharField(max_length=30, null=True, blank=True, unique=True,
                                  verbose_name='sygnatura kancelarii'
                                  )
-    accused_persons = models.ManyToManyField(Person, related_name='accused_persons', verbose_name='osoby oskarżone w sprawie')
+    accused_persons = models.ManyToManyField(Person, related_name='accused_persons',
+                                             verbose_name='osoby oskarżone w sprawie')
     accused_companies = models.ManyToManyField(Company, related_name='accused_companies')
     prosecutor_persons = models.ManyToManyField(Person, related_name='prosecutor_persons')
     prosecutor_companies = models.ManyToManyField(Company, related_name='prosecutor_companies')
@@ -56,7 +57,8 @@ class Case(models.Model):
     result = models.CharField(max_length=60, blank=True, null=True, verbose_name='wynik sprawy')
     create_date = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     costs = models.FloatField(null=True, blank=True, default=0, verbose_name='koszty sprawy')
-    bailiff = models.ForeignKey(Bailiff, null=True, blank=True, verbose_name='komornik', on_delete=models.SET_NULL, default=None)
+    bailiff = models.ForeignKey(Bailiff, null=True, blank=True, verbose_name='komornik', on_delete=models.SET_NULL,
+                                default=None)
     description = models.CharField(max_length=250, null=True, blank=True, verbose_name='opis', default=None)
 
     def __str__(self):
@@ -72,7 +74,3 @@ class Firstnames(models.Model):
         indexes = [
             models.Index(fields=['name']),
         ]
-
-
-
-

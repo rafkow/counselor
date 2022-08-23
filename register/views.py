@@ -158,10 +158,11 @@ def case(request, pk=0):
 
 def case_edit(request, pk=0):
     selected = Case.objects.get(pk=pk)
+    form = CaseEditForm()
     context = {
-        'cases': Case.objects.all()
+        'form': form
     }
-    return render(request, 'case/list.html', context)
+    return render(request, 'case/edit.html', context)
 
 
 def bailiff(request):
