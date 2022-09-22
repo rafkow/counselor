@@ -82,24 +82,6 @@ def create(request):
         return render(request, 'person/create.html', context)
 
 
-def update(request, pk):
-    if request.method == 'POST':
-        form = PersonCreateFrom(request.POST)
-        if form.is_valid():
-            new = form.save()
-            return redirect("person", pk=new.pk)
-    if request.method == 'GET':
-        form = PersonCreateFrom()
-        if pk:
-            print(pk)
-            find = Person.objects.get(pk=pk)
-            print(f'osoba  {find}')
-        context = {
-            'form': form
-        }
-        return render(request, 'person/update.html', context)
-
-
 def person(request, pk=0):
     if request.method == 'GET':
         if pk:
@@ -133,6 +115,24 @@ def person(request, pk=0):
             return render(request, 'person/list.html', context)
 
 
+def person_update(request, pk):
+    if request.method == 'POST':
+        form = PersonCreateFrom(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("person", pk=form.pk)
+    if request.method == 'GET':
+        form = PersonCreateFrom()
+        if pk:
+            print(pk)
+            find = Person.objects.get(pk=pk)
+            print(f'osoba  {find}')
+        context = {
+            'form': form
+        }
+        return render(request, 'person/update.html', context)
+
+
 def case(request, pk=0):
     if request.method == 'POST':
         form = CaseForm(request.POST)
@@ -142,19 +142,31 @@ def case(request, pk=0):
             return redirect("register:person", pk=person_id)
         return redirect("register:person", pk=0)
     if request.method == 'GET' and pk:
-        context = {'case': Case.objects.get(pk=pk), 'refund': Refund.objects.filter(case__pk=pk).first()}
-        if context['refund']:
-            context['form'] = PaymentCreateForm(initial={'refund': context['refund']})
-            context['payments'] = Payments.objects.filter(refund__pk=context['refund'].pk)
-        else:
-            context['form'] = RefundCreateForm(initial={'case': context['case']})
-        return render(request, 'case/selected.html', context)
+        if selected_case := Case.objects.get(pk=pk):
+            context = {'case': selected_case, 'refund': Refund.objects.filter(case__pk=pk).first()}
+            if context['refund']:
+                context['form'] = PaymentCreateForm(initial={'refund': context['refund']})
+                context['payments'] = Payments.objects.filter(refund__pk=context['refund'].pk)
+            else:
+                context['form'] = RefundCreateForm(initial={'case': context['case']})
+            if not selected_case.court_reference_number:
+                context['cort_reference_number_form'] = CaseCourtReferenceForm({'pk': selected_case.pk})
+            return render(request, 'case/selected.html', context)
 
     context = {
         'cases': Case.objects.all()
     }
     return render(request, 'case/list.html', context)
 
+
+def case_update_court_reference_number(request):
+    if pk := request.GET.get('pk', 0):
+        if case_selected := Case.objects.get(pk=pk):
+            if reference_number := request.GET.get('court_reference_number', None):
+                case_selected.court_reference_number = reference_number
+                case_selected.save()
+    return redirect('register:case', pk=pk)
+    
 
 def case_edit(request, pk=0):
     selected = Case.objects.get(pk=pk)

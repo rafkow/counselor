@@ -39,29 +39,34 @@
     <div class="card-body">
         <h5 class="card-title">Przypisani do sprawy </h5>
         <div class="row">
-            <div class="col-3">pozwani</div>
-                <div class="col-1">
+            <div class="col-6">
+                <div class="d-flex justify-content-around">
+                <div class="h4">pozwani</div>
+                <div>
                     <button id="accused_person" type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#accused_person_modal">dodaj osobę <i class="ri-add-fill"></i> </button>
-                </div>
-                <div class="col-1">
                     <button id="accused_company" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#accused_company_modal">dodaj firmę<i class="ri-add-fill"></i> </button>
                 </div>
-            <div class="col-3">powód</div>
-            <div class="col-1">
-                    <p id="prosecutor_person" class="text-primary" data-bs-toggle="modal" data-bs-target="#prosecutor_person_modal">dodaj osobę </p>
-                </div>
-                <div class="col-1">
+            </div>
+            </div>
+            <div class="col-6">
+                <div class="d-flex justify-content-around">
+                <div class="h4">powód</div>
+                <div>
+                    <button id="prosecutor_person" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#prosecutor_person_modal">dodaj osobę </button>
                     <button id="prosecutor_company" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#prosecutor_company_modal">dodaj firmę<i class="ri-add-fill"></i> </button>
                 </div>
+                </div>
+        </div>
         </div>
         <div class="row mt-1">
             <div class="col">
                 {% for company in case.accused_companies.all %} <h5>{{ company }}</h5> {% endfor %}
                 {% for person in case.accused_persons.all %}
-                    <h5>{{ person }}
+                    <h5>
                         <a href="{% url 'register:person' person.id %}">
                             <i class="bi bi-file-earmark-person"></i>
                         </a>
+                        {{ person }}
                     </h5>
                 {% endfor %}
             </div>
@@ -71,9 +76,20 @@
             </div>
         </div>
 
-<!--    {% for person in people %}-->
-<!--        <h5>{{ person }}</h5>-->
-<!--    {% endfor %}-->
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title"> Portal sądowy </h5>
+        {% if cort_reference_number_form %}
+        <form action="{% url 'register:court_reference_number' %}" method="get">
+            {{ cort_reference_number_form }}
+            <button class="btn btn-primary my-1" type="submit">Przypisz sygnaturę</button>
+        </form>
+        {% else %}
+        {{ case.court_reference_number }}
+        {% endif %}
     </div>
 </div>
 
@@ -139,12 +155,7 @@
 </div>
 {% endif %}
 
-<div class="card">
-    <div class="card-body">
-        <h5 class="card-title"> Portal sądowy </h5>
 
-    </div>
-</div>
 
 
 <!-- Modal -->

@@ -48,6 +48,7 @@ class Case(models.Model):
     signature = models.CharField(max_length=30, null=True, blank=True, unique=True,
                                  verbose_name='sygnatura kancelarii'
                                  )
+    court_reference_number = models.CharField(max_length=15, null=True, blank=True, verbose_name="sygnatura sądowa")
     accused_persons = models.ManyToManyField(Person, related_name='accused_persons',
                                              verbose_name='osoby oskarżone w sprawie')
     accused_companies = models.ManyToManyField(Company, related_name='accused_companies')
@@ -56,7 +57,7 @@ class Case(models.Model):
     type = models.CharField(max_length=60, choices=TYPE, null=True, blank=True, verbose_name='typ sprawy', default=None)
     result = models.CharField(max_length=60, blank=True, null=True, verbose_name='wynik sprawy')
     create_date = models.DateTimeField(auto_now_add=True, null=True, blank=True)
-    costs = models.FloatField(null=True, blank=True, default=0, verbose_name='koszty sprawy')
+
     bailiff = models.ForeignKey(Bailiff, null=True, blank=True, verbose_name='komornik', on_delete=models.SET_NULL,
                                 default=None)
     description = models.CharField(max_length=250, null=True, blank=True, verbose_name='opis', default=None)

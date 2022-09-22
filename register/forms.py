@@ -21,13 +21,15 @@ class PersonCreateFrom(forms.ModelForm):
 class CaseForm(forms.ModelForm):
     class Meta:
         model = Case
-        exclude = ['date_created', 'result', 'companies', 'accused_companies', 'prosecutor_persons',
-                   'prosecutor_companies', 'bailiff', 'costs', 'accused_persons']
+        # exclude = ['date_created', 'result', 'companies', 'accused_companies', 'prosecutor_persons',
+        #            'prosecutor_companies', 'bailiff', 'costs', 'accused_persons']
+        fields = ['signature', 'type', 'accused_persons', 'description', ]
 
         widgets = {
             'signature': TextInput(attrs={'class': 'form-control'}),
             'type': Select(attrs={'class': 'form-control'}),
             'description': Textarea(attrs={'class': 'form-control'}),
+            'accused_persons': SelectMultiple(attrs={'class': 'form-control'})
         }
 
 
@@ -44,6 +46,14 @@ class CaseEditForm(forms.ModelForm):
             'bailiff': Select(attrs={'class': 'form-control'}),
             'description': Textarea(attrs={'class': 'form-control'}),
         }
+
+
+class CaseCourtReferenceForm(forms.Form):
+    pk = forms.IntegerField(widget=forms.HiddenInput)
+    court_reference_number = forms.CharField(
+        label="Przypisz sygnaturę sądową",
+        widget=TextInput(attrs={'class': 'form-control'})
+    )
 
 
 class FamilyCreateForm(forms.ModelForm):
