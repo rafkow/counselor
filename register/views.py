@@ -8,8 +8,9 @@ from .forms import *
 from .models import *
 from payments.forms import RefundCreateForm, PaymentCreateForm
 from payments.models import Refund, Payments
-
+from portal_informacyjny.portal import Portal
 from .entities import extract_person, signatures
+import json
 
 
 def index(request):
@@ -110,9 +111,16 @@ def person(request, pk=0):
             return render(request, 'person/selected.html', context)
         else:
             context = {
-                'persons': Person.objects.all()
+                'persons': Person.objects.all(),
+                'form': PersonCreateFrom()
             }
             return render(request, 'person/list.html', context)
+    if request.method == 'POST':
+        form = PersonCreateFrom(request.POST)
+        if form.is_valid():
+            new = form.save()
+            return redirect('register:person', pk=new.pk)
+        return redirect('register:persons')
 
 
 def person_update(request, pk):
@@ -126,7 +134,8 @@ def person_update(request, pk):
         if pk:
             print(pk)
             find = Person.objects.get(pk=pk)
-            print(f'osoba  {find}')
+            print(f'osoba  {find.id}')
+            form = PersonCreateFrom(instance=find)
         context = {
             'form': form
         }
@@ -149,7 +158,10 @@ def case(request, pk=0):
                 context['payments'] = Payments.objects.filter(refund__pk=context['refund'].pk)
             else:
                 context['form'] = RefundCreateForm(initial={'case': context['case']})
-            if not selected_case.court_reference_number:
+            if court := Court.objects.filter(case__pk=pk):
+                context['court'] = court.first()
+                context['assign_bailiff_form'] = CaseAssignBailiffForm()
+            else:
                 context['cort_reference_number_form'] = CaseCourtReferenceForm({'pk': selected_case.pk})
             return render(request, 'case/selected.html', context)
 
@@ -163,18 +175,30 @@ def case_update_court_reference_number(request):
     if pk := request.GET.get('pk', 0):
         if case_selected := Case.objects.get(pk=pk):
             if reference_number := request.GET.get('court_reference_number', None):
-                case_selected.court_reference_number = reference_number
-                case_selected.save()
+                result = Portal.get_case_by_court_reference_number(reference_number)
+                result_dict = json.dumps(result[0])
+                x = json.loads(result_dict)
+                court = Court()
+                court.case = case_selected
+                court.init(portal_response=x)
+                court.save()
+    return redirect('register:case', pk=pk)
+
+
+def case_court_info(request, pk=0):
+    if case_selected := Case.objects.first(pk=pk):
+        case_selected.court_reference_number
+        Portal.get_case_by_court_reference_number(case_selected.court_reference_number)
     return redirect('register:case', pk=pk)
     
 
-def case_edit(request, pk=0):
-    selected = Case.objects.get(pk=pk)
-    form = CaseEditForm()
-    context = {
-        'form': form
-    }
-    return render(request, 'case/edit.html', context)
+# def case_edit(request, pk=0):
+#     selected = Case.objects.get(pk=pk)
+#     form = CaseEditForm()
+#     context = {
+#         'form': form
+#     }
+#     return render(request, 'case/edit.html', context)
 
 
 def bailiff(request):

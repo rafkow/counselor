@@ -12,7 +12,8 @@ urlpatterns = [
     path('person/<int:pk>', views.person, name='person'),
     path('case/', views.case, name='case'),
     path('case/<int:pk>', views.case, name='case'),
-    path('case/edit/<int:pk>', views.case_edit, name='case_edit'),
+    path('case/court_info/<int:pk>', views.case_court_info, name='court_info'),
+    # path('case/edit/<int:pk>', views.case_edit, name='case_edit'),
     path('case/court_reference_number', views.case_update_court_reference_number, name='court_reference_number'),
     path('register/family', views.family, name='family'),
     path('import', views.data_import, name='data_import'),
@@ -20,9 +21,10 @@ urlpatterns = [
     path('bailiff', views.bailiff, name='bailiff'),
     path('company', views.company, name='company'),
     path('company/<int:pk>', views.company, name='company'),
-
     path('api/person', api.person, name='api_person'),
     path('api/company', api.company, name='api_company'),
 ]
 
 handler404 = "register.views.page_not_found_view"
+
+

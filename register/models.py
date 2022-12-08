@@ -35,6 +35,9 @@ class Company(models.Model):
 # Komornik sądowy
 class Bailiff(models.Model):
     name = models.CharField(max_length=60)
+    street = models.CharField(max_length=60, default='', verbose_name='ulica')
+    city = models.CharField(max_length=60, default="Grudziądz", verbose_name='miejscowość')
+    postcode = models.CharField(max_length=60, default='86-300', verbose_name='kod pocztowy')
 
     def __str__(self):
         return f"{self.name}"
@@ -44,23 +47,55 @@ class Case(models.Model):
     # ('save value in DB', 'display on selected list')
     TYPE = (('eviction', 'eksmisja'), ('payment', 'o zapłatę'),
             ('divorce', 'rozwód'), ('insolvency', 'zgłoszenie wierzytenlość'))
+    RESULT = (('new', 'nowa'),
+              ('begin', 'rozpoczęta'),
+              ('won', 'wygrana'),
+              ('lose', 'przegrana'),
+              ('enforced', 'egzekwowana'),
+              ('end', 'zakończona')
+              )
 
     signature = models.CharField(max_length=30, null=True, blank=True, unique=True,
                                  verbose_name='sygnatura kancelarii'
                                  )
-    court_reference_number = models.CharField(max_length=15, null=True, blank=True, verbose_name="sygnatura sądowa")
     accused_persons = models.ManyToManyField(Person, related_name='accused_persons',
                                              verbose_name='osoby oskarżone w sprawie')
     accused_companies = models.ManyToManyField(Company, related_name='accused_companies')
     prosecutor_persons = models.ManyToManyField(Person, related_name='prosecutor_persons')
     prosecutor_companies = models.ManyToManyField(Company, related_name='prosecutor_companies')
     type = models.CharField(max_length=60, choices=TYPE, null=True, blank=True, verbose_name='typ sprawy', default=None)
-    result = models.CharField(max_length=60, blank=True, null=True, verbose_name='wynik sprawy')
+    result = models.CharField(max_length=60, choices=RESULT, default=RESULT[0][0], verbose_name='wynik sprawy')
     create_date = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     bailiff = models.ForeignKey(Bailiff, null=True, blank=True, verbose_name='komornik', on_delete=models.SET_NULL,
                                 default=None)
     description = models.CharField(max_length=250, null=True, blank=True, verbose_name='opis', default=None)
+
+    def __str__(self):
+        return f"{self.signature}"
+
+
+class Court(models.Model):
+    case = models.ForeignKey(Case, verbose_name='sprawa', on_delete=models.CASCADE, null=False)
+    court_id = models.IntegerField()
+    signature = models.CharField(max_length=15)
+    court_name = models.CharField(max_length=150)
+    receipt_date = models.DateTimeField(verbose_name="data wpłynięcia sprawy")
+    finish_date = models.DateTimeField(verbose_name="data zakończenia rozprawy")
+    judge_name = models.CharField(max_length=150)
+    subject = models.CharField(max_length=100)
+    description = models.CharField(max_length=150, null=True)
+
+    def init(self, portal_response=None):
+        if portal_response:
+            self.court_id = portal_response['id']
+            self.signature = portal_response['signature']
+            self.court_name = portal_response['courtName']
+            self.receipt_date = portal_response['receiptDate']
+            self.finish_date = portal_response['finishDate']
+            self.judge_name = portal_response['judgeName']
+            self.subject = portal_response['subject']
+            self.description = portal_response['description']
 
     def __str__(self):
         return f"{self.signature}"

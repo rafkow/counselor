@@ -12,8 +12,8 @@
                   <th scope="col">#</th>
                   <th scope="col">Sygnatura</th>
                   <th scope="col">Typ</th>
-                  <th scope="col">Koszty</th>
-                  <th scope="col">Start Date</th>
+                  <th scope="col">status sprawy</th>
+                  <th scope="col">data pierwszego wpisu</th>
                   {% if case.bailiff %}
                   <th scope="col">Komornik</th>
                   {% endif %}
@@ -24,7 +24,7 @@
                   <th scope="row">1</th>
                   <td>{{ case.signature }}</td>
                   <td>{{ case.gat_type_display }}</td>
-                  <td>{{ case.costs }}</td>
+                  <td>{{ case.result }}</td>
                   <td>{{ case.create_date|localize }}</td>
                   {% if case.bailiff %}
                     <td>{{ case.bailiff }}</td>
@@ -87,8 +87,27 @@
             {{ cort_reference_number_form }}
             <button class="btn btn-primary my-1" type="submit">Przypisz sygnaturę</button>
         </form>
-        {% else %}
-        {{ case.court_reference_number }}
+        {% endif %}
+
+        {% if court %}
+        <div class="row">
+            <div class="col">
+                <p>{{ court.signature }}</p>
+                <p>{{ court.court_name }}</p>
+                <p>{{ court.receipt_date }}</p>
+                <p>{{ court.finish_date }}</p>
+                <p>{{ court.judge_name }}</p>
+                <p>{{ court.subject }}</p>
+            </div>
+            <div class="col"></div>
+            {% if assign_bailiff_form %}
+            <div class="col">
+                {{ assign_bailiff_form }}
+            </div>
+            {% endif %}
+
+        </div>
+
         {% endif %}
     </div>
 </div>
@@ -115,7 +134,8 @@
 <div class="card">
     <div class="card-body">
         <h5 class="card-title">Koszty sprawy </h5>
-        <h5>{{ refund }}</h5>
+        <h5 class="d-inline">{{ refund }}</h5>
+        <a href="{% url 'payments:enforcement_request' %}" class="btn btn-primary m-2">wygeneruj dokument wszczęcia egzekucji</a>
         <table class="table">
             <thead>
             <tr>

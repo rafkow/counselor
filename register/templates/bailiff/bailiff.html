@@ -1,19 +1,30 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form class="mb-3" action="{% url 'register:bailiff' %}" method="post">
-{% csrf_token %}
-{{ form.as_p }}
-    <button type="submit" class="btn btn-primary">dodaj</button>
-</form>
 
-<div class="card">
-    <div class="card-body">
-        <h5 class="card-title"> Komornicy</h5>
-    {% for bailiff in bailiffs %}
-        <h5>{{ bailiff.name }}<a href=""><i class="bi bi-arrow-return-right ps-3"></i></a></h5>
-    {% endfor %}
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"> Komornicy</h5>
+                {% for bailiff in bailiffs %}
+                <h5>{{ bailiff.name }}
+                    <a href="#"><i class="bi bi-arrow-return-right ps-3"></i></a>
+                    <a href="#"><i class="bi bi-arrow-return-right ps-3"></i></a></h5>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card">
+            <form class="p-3" action="{% url 'register:bailiff' %}" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">dodaj</button>
+            </form>
+        </div>
     </div>
 </div>
+
 
 {% endblock %}

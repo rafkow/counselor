@@ -6,9 +6,11 @@ from .models import *
 class PersonCreateFrom(forms.ModelForm):
     class Meta:
         model = Person
-        exclude = ['date_created']
+        # exclude = ['date_created']
+        fields = '__all__'
 
         widgets = {
+            # 'id': TextInput(attrs={'class': 'form-control'}),
             'first_name': TextInput(attrs={'class': 'form-control'}),
             'last_name': TextInput(attrs={'class': 'form-control'}),
             'pesel': TextInput(attrs={'class': 'form-control'}),
@@ -56,6 +58,16 @@ class CaseCourtReferenceForm(forms.Form):
     )
 
 
+class CaseAssignBailiffForm(forms.ModelForm):
+    class Meta:
+        model = Case
+        fields = ['id', 'bailiff']
+
+        widgets = {
+            'bailiff': Select(attrs={'class': 'form-control'})
+        }
+
+
 class FamilyCreateForm(forms.ModelForm):
     class Meta:
         model = Family
@@ -72,7 +84,9 @@ class BailiffCreateForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'name': TextInput(attrs={'class': 'form-control'}),
-        }
+            'street': TextInput(attrs={'class': 'form-control'}),
+            'city': TextInput(attrs={'class': 'form-control'}),
+            'postcode': TextInput(attrs={'class': 'form-control'})}
 
 
 class ImportDataForm(forms.Form):

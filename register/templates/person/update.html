@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form action="#" method="post">
+<form action="{% url 'register:person' 0 %}" method="post">
 {% csrf_token %}
 {{ form.as_p }}
+    <p>{{ form.pk }}</p>
     <button type="submit" class="btn btn-primary">dodaj</button>
 </form>
 {% endblock %}

@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from .models import *
 from payments.forms import RefundCreateForm, PaymentCreateForm
+from register.models import Case
+from docx import Document
 
 
 def home(request):
@@ -28,4 +30,11 @@ def payment(request):
     return Http404("nie przesłano prawidłowego formularza")
 
 
+def generate_enforcement_request(request):
+    document = Document('payments/resources/wszczecie_egzekucji_copy.docx')
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    response['Content-Disposition'] = 'attachment; filename=download.docx'
+    document.save(response)
+
+    return response
 

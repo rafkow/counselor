@@ -8,6 +8,7 @@ urlpatterns = [
     path('refund', views.refund, name='refund'),
     path('refund/<int:id>', views.refund, name='refund'),
     path('payment', views.payment, name='payment'),
+    path('generate', views.generate_enforcement_request, name='enforcement_request'),
 ]
 
 
