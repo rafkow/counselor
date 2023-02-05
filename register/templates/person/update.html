@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form action="{% url 'register:person' 0 %}" method="post">
+<form action="" method="post">
+
 {% csrf_token %}
 {{ form.as_p }}
-    <p>{{ form.pk }}</p>
+    <a href="{% url 'register:person' form.instance.id %}" class="btn btn-warning">anuluj</a>
     <button type="submit" class="btn btn-primary">dodaj</button>
 </form>
 {% endblock %}

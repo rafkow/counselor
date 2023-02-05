@@ -29,6 +29,7 @@ class Refund(models.Model):
 
 class Payments(models.Model):
     create_date = models.DateTimeField(auto_now_add=True)
-    value = models.FloatField(null=True)
+    payment_date = models.DateField(null=True, verbose_name="data spłaty")
+    value = models.FloatField(null=True, verbose_name="spłacono")
     refund = models.ForeignKey(Refund, on_delete=models.CASCADE, related_name='bill')
 

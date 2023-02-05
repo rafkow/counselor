@@ -95,14 +95,23 @@
                 <p>{{ court.signature }}</p>
                 <p>{{ court.court_name }}</p>
                 <p>{{ court.receipt_date }}</p>
+                {% if cort.finish_date %}
                 <p>{{ court.finish_date }}</p>
+                {% else %}
+                <p>sprawa jeszcze nie zakonczona</p>
+                {% endif %}
                 <p>{{ court.judge_name }}</p>
                 <p>{{ court.subject }}</p>
             </div>
             <div class="col"></div>
             {% if assign_bailiff_form %}
             <div class="col">
-                {{ assign_bailiff_form }}
+                <form action="{% url 'register:bailiff_assign' %}" method="GET">
+                    {% csrf_token %}
+                    <input type="hidden" name="case_id" value="{{ case.id }}">
+                    {{ assign_bailiff_form }}
+                    <button class="btn btn-primary">przypisz komornika</button>
+                </form>
             </div>
             {% endif %}
 
@@ -156,8 +165,9 @@
                 </tr>
                 {% for pay in refund.bill.all %}
                 <tr>
-                    <td colspan="3"></td>
-                    <td>{{ pay.create_date }}</td>
+                    <td colspan="2"></td>
+                    <td class="text-end">spłacono:</td>
+                    <td>{{ pay.payment_date }}</td>
                     <td>{{ pay.value }}</td>
                 </tr>
                 {% endfor %}

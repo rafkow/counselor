@@ -91,7 +91,7 @@ def person(request, pk=0):
             if ff.count() < 1:
                 ff = FamilyCreateForm(
                     initial={
-                        'name': f'{find.last_name} - {find.address}',
+                        'name': f'{find.last_name} - {find.street}',
                         'persons': find
                     }
                 )
@@ -105,6 +105,7 @@ def person(request, pk=0):
                 'person': find,
                 'family': ff,
                 'new_case': new_case_form,
+                'simple_case_form': SimpleCaseCreateForm,
                 'cases': cases,
                 'next_signatures': signatures.next_signature(),
             }
@@ -124,18 +125,14 @@ def person(request, pk=0):
 
 
 def person_update(request, pk):
+    find = Person.objects.get(pk=pk)
     if request.method == 'POST':
-        form = PersonCreateFrom(request.POST)
+        form = PersonUpdateForm(request.POST, instance=find)
         if form.is_valid():
             form.save()
-            return redirect("person", pk=form.pk)
+        return redirect("register:person", pk=find.pk)
     if request.method == 'GET':
-        form = PersonCreateFrom()
-        if pk:
-            print(pk)
-            find = Person.objects.get(pk=pk)
-            print(f'osoba  {find.id}')
-            form = PersonCreateFrom(instance=find)
+        form = PersonUpdateForm(instance=find)
         context = {
             'form': form
         }
@@ -150,8 +147,26 @@ def case(request, pk=0):
             form.save()
             return redirect("register:person", pk=person_id)
         return redirect("register:person", pk=0)
+    if request.method == 'GET' \
+        and request.GET.get('signature', None) \
+        and request.GET.get('person_id', None) \
+        and request.GET.get('type', None):
+            signature = request.GET.get('signature', None)
+            person_id = request.GET.get('person_id', None)
+            type = request.GET.get('type', None)
+            person = Person.objects.get(pk=person_id)
+            case = Case(signature=signature, type=type)
+            case.save()
+            case.accused_persons.add(person)
+            case.save()
+            pk = case.pk
     if request.method == 'GET' and pk:
         if selected_case := Case.objects.get(pk=pk):
+            if bailiff_id := request.GET.get('bailiff'):
+                selected_bailiff = Bailiff.objects.get(pk=bailiff_id)
+                selected_case.bailiff = selected_bailiff
+                selected_case.result = Case.RESULT[4][0]
+                selected_case.save()
             context = {'case': selected_case, 'refund': Refund.objects.filter(case__pk=pk).first()}
             if context['refund']:
                 context['form'] = PaymentCreateForm(initial={'refund': context['refund']})
@@ -199,6 +214,25 @@ def case_court_info(request, pk=0):
 #         'form': form
 #     }
 #     return render(request, 'case/edit.html', context)
+
+def case_bailiff_assign(request):
+    if request.method == 'POST':
+        form = CaseAssignBailiffForm(request.POST)
+        if form.is_valid():
+            case_id = form.cleaned_data.get('id')
+            find = Case.objects.get(pk=case_id)
+            bailiff_id = form.cleaned_data.get('bailiff')
+    if request.method == 'GET':
+        case_id = request.GET.get('case_id', None)
+        found_case = Case.objects.get(pk=case_id)
+        if found_case:
+            bailiff_id = request.GET.get('bailiff', None)
+            found_bailiff = Bailiff.objects.get(pk=bailiff_id)
+            if found_bailiff:
+                found_case.bailiff = found_bailiff
+                found_case.save()
+                return redirect('register:case', pk=case_id)
+    return redirect('register:case')
 
 
 def bailiff(request):

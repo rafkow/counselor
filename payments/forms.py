@@ -23,6 +23,7 @@ class PaymentCreateForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'create_date': TextInput(attrs={'class': 'form-control'}),
+            'payment_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'value': NumberInput(attrs={'class': 'form-control'}),
             'refund': HiddenInput(attrs={'class': 'form-control'}),
         }

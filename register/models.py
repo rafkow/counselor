@@ -5,9 +5,11 @@ class Person(models.Model):
     first_name = models.CharField(max_length=30, null=True, blank=True, verbose_name='imię')
     last_name = models.CharField(max_length=60, null=True, verbose_name='nazwisko')
     pesel = models.CharField(max_length=11, null=True, blank=True, verbose_name='numer pesel')
-    address = models.CharField(max_length=60, null=True, blank=True, verbose_name='adres')
     phone = models.CharField(max_length=30, null=True, blank=True, verbose_name='numer telefonu')
     date_created = models.DateTimeField(auto_now_add=True)
+    street = models.CharField(max_length=60, default='', verbose_name='ulica')
+    city = models.CharField(max_length=60, default="Grudziądz", verbose_name='miejscowość')
+    postcode = models.CharField(max_length=60, default='86-300', verbose_name='kod pocztowy')
     note = models.CharField(max_length=30, null=True, blank=True, verbose_name='notatka')
 
     def __str__(self):
@@ -34,7 +36,7 @@ class Company(models.Model):
 
 # Komornik sądowy
 class Bailiff(models.Model):
-    name = models.CharField(max_length=60)
+    name = models.CharField(max_length=60, verbose_name="imię i nazwisko")
     street = models.CharField(max_length=60, default='', verbose_name='ulica')
     city = models.CharField(max_length=60, default="Grudziądz", verbose_name='miejscowość')
     postcode = models.CharField(max_length=60, default='86-300', verbose_name='kod pocztowy')
@@ -81,7 +83,7 @@ class Court(models.Model):
     signature = models.CharField(max_length=15)
     court_name = models.CharField(max_length=150)
     receipt_date = models.DateTimeField(verbose_name="data wpłynięcia sprawy")
-    finish_date = models.DateTimeField(verbose_name="data zakończenia rozprawy")
+    finish_date = models.DateTimeField(verbose_name="data zakończenia rozprawy", null=True)
     judge_name = models.CharField(max_length=150)
     subject = models.CharField(max_length=100)
     description = models.CharField(max_length=150, null=True)

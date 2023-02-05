@@ -2,10 +2,29 @@
 
 {% block content %}
 
-<h3>{{ person }}</h3>
+<h3 class="d-inline">{{ person }} <a href="{% url 'register:person_update' person.id %}"><i class="bi bi-pencil"></i></a> </h3>
 
 <div class="row">
     <div class="col-5">
+        <div class="card">
+            <div class="card-body">
+            <h5 class="card-title">Dane</h5>
+                <div class="row">
+                <div class="col-4">imie</div>
+                <div class="col-8">{{ person.first_name }}</div>
+                <div class="col-4">nazwisko</div>
+                <div class="col-8">{{ person.last_name }}</div>
+                <div class="col-4">pesel</div>
+                <div class="col-8">{{ person.pesel }}</div>
+                <div class="col-4">telefon</div>
+                <div class="col-8">{{ person.phone }}</div>
+                <div class="col-4">adres</div>
+                <div class="col-8">{{ person.street }}</div>
+                <div class="col-4"></div>
+                <div class="col-8">{{ person.postcode }} {{ person.city }}</div>
+                </div>
+            </div>
+        </div>
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Rodzina <i class="ri-add-fill"></i> </h5>
@@ -37,6 +56,16 @@
     </div>
 
     <div class="col-7">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Nowa sprawa</h4>
+                <form action="{% url 'register:case' %}" method="get">
+                <input name="person_id" type="hidden" value="{{ person.id }}">
+                {{ simple_case_form }}
+                <button class="btn btn-primary">nowa sprawa</button>
+                </form>
+            </div>
+        </div>
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Sprawy bieżące</h5>

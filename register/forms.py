@@ -20,6 +20,12 @@ class PersonCreateFrom(forms.ModelForm):
         }
 
 
+class PersonUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Person
+        fields = '__all__'
+
+
 class CaseForm(forms.ModelForm):
     class Meta:
         model = Case
@@ -33,6 +39,12 @@ class CaseForm(forms.ModelForm):
             'description': Textarea(attrs={'class': 'form-control'}),
             'accused_persons': SelectMultiple(attrs={'class': 'form-control'})
         }
+
+
+class SimpleCaseCreateForm(forms.Form):
+    signature = forms.CharField(label='sygnatura', max_length=15, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    type = forms.ChoiceField(label='typ sprawy', choices=Case.TYPE,
+                             widget=forms.Select(attrs={'class': 'form-control'}))
 
 
 class CaseEditForm(forms.ModelForm):
