@@ -127,7 +127,7 @@ def person(request, pk=0):
 def person_update(request, pk):
     find = Person.objects.get(pk=pk)
     if request.method == 'POST':
-        form = PersonUpdateForm(request.POST, instance=find)
+        form = PersonCreateFrom(request.POST, instance=find)
         if form.is_valid():
             form.save()
         return redirect("register:person", pk=find.pk)

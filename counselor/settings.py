@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'register',
     'payments',
-    'portal_informacyjny'
+    'portal_informacyjny',
+    'counselor'
 ]
 
 MIDDLEWARE = [
