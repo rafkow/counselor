@@ -1,14 +1,17 @@
 import requests
 import logging
 import ast
+import os
 from decouple import config
 from datetime import datetime
 from datetime import timedelta
 
 
+log_filename = "logs/log.log"
+os.makedirs(os.path.dirname(log_filename), exist_ok=True)
 logging.basicConfig(
     level=logging.INFO,
-    filename="logs/log.log",
+    filename=log_filename,
     filemode="w"
 )
 
