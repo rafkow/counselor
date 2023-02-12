@@ -17,8 +17,8 @@ class Person(models.Model):
 
 
 class Family(models.Model):
-    name = models.CharField(max_length=200)
-    persons = models.ManyToManyField(Person)
+    name = models.CharField(max_length=200, verbose_name='nazwa rodziny')
+    persons = models.ManyToManyField(Person, verbose_name='członkowie rodziny')
 
     def __str__(self):
         return f"{self.name}"
@@ -54,8 +54,8 @@ class Case(models.Model):
               ('won', 'wygrana'),
               ('lose', 'przegrana'),
               ('enforced', 'egzekwowana'),
-              ('end', 'zakończona')
-              )
+              ('end', 'zakończona'))
+
 
     signature = models.CharField(max_length=30, null=True, blank=True, unique=True,
                                  verbose_name='sygnatura kancelarii'

@@ -67,3 +67,243 @@
 [66]A/a – 1 egz.
 [67]
 
+0 0 |
+0 1 | KANCELARIA RADCY PRAWNEGO „DORADCA”
+1 0 | Stanisław
+1 1 | Wajsgerber
+2 0 | ul. Droga Jeziorna 8                                                86-303 Grudziądz
+3 0 | tel./ fax
+3 1 | 56/ 46-266-15
+3 2 |
+5 0 | Grud
+5 1 | ziądz, dnia
+5 2 | 14
+5 3 | grudnia
+5 4 |  2022
+5 5 |  r.
+6 0 | N
+6 1 | a
+6 2 | s
+6 3 | z znak: M/
+6 4 | 111
+6 5 | /2
+6 6 | 2
+7 0 | Komornik Sądowy
+8 0 | przy Sądzie Rejonowym
+9 0 | w Grudziądzu
+10 0 | Dorota
+10 1 | Lipniewska
+11 0 | ul. Groblowa 4/3
+12 0 | 86-300 Grudziądz
+13 0 |
+15 0 |
+15 1 | Wierzyciel:
+15 2 | Miejskie Przedsiębiorstwo Gospodarki
+16 0 |
+16 1 | Nieruchomościami sp. z o.o. w Grudziądzu
+17 0 |
+17 1 | zastępowana przez  radcę prawnego Stanisława
+17 2 | Wajsgerber
+18 0 |
+18 1 | prowadzącego
+18 2 |
+18 3 | Kancelarię Radcy Prawnego „Doradca” Stanisław
+19 0 |
+19 1 | Wajsgerber
+20 0 |
+20 1 | Adres dla doręczeń:
+21 0 |
+21 1 | Kancelaria Radcy Prawnego „Doradca” Stanisław
+21 2 | Wajsgerber
+22 0 |
+22 1 | ul. Droga Jeziorna 8, 86-303 Grudziądz
+24 0 |
+24 1 | D
+24 2 | łużnik:
+24 3 |
+24 4 | Anna Kotowicz
+25 0 |
+25 1 | Zakład Karny nr 1 ul. Wybickiego 10/22
+26 0 |
+26 1 |
+26 2 |  86-300 Grudziądz
+28 0 |
+28 1 |
+29 0 | Wniosek o wszczęcie egzekucji
+31 0 | Załączając
+31 1 |
+31 2 |
+31 3 | nakaz zapłaty
+31 4 |  Sądu Rejonowego w G
+31 5 | rudziądzu Wydział I
+31 6 | Cywilny
+31 7 |
+31 8 | z d
+31 9 | n
+31 10 | ia
+31 11 | 20
+31 12 |  maja
+31 13 |
+31 14 | 20
+31 15 | 2
+31 16 | 2
+31 17 |  r., sygn. akt:
+31 18 |
+31 19 |
+31 20 | I
+31 21 | Nc
+31 22 |
+31 23 | 660
+31 24 | /
+31 25 | 2
+31 26 | 2
+31 27 |  opatrzony
+31 28 |  kl
+31 29 | auzulą wykonalności tegoż Sądu,
+31 30 |
+31 31 | na podstawie którego dłużni
+31 32 | k
+31 33 |  ma
+31 34 |  zapłacić
+31 35 |
+31 36 |  wierzycielowi:
+32 0 | Kwotę
+32 1 | 5697,23
+32 2 |
+32 3 | z
+32 4 | ł
+32 5 | tytułem
+32 6 |  nale
+32 7 | żności głów
+32 8 | nej
+33 0 | ustawowe odsetki
+33 1 |  za opóźnienie
+33 2 |
+33 3 | zgodnie z treścią
+33 4 | wyroku
+34 0 |
+34 1 |
+35 0 |
+36 0 |
+36 1 |
+36 2 |
+36 3 |
+36 4 |
+37 0 |
+37 1 |
+37 2 |
+38 0 | koszty procesu w kwocie
+38 1 | 16
+38 2 | 17
+38 3 | ,
+38 4 | 00
+38 5 |  zł
+38 6 |
+38 7 | wraz z ustawowymi odsetkami za
+39 0 |
+39 1 |
+39 2 |
+39 3 |
+39 4 |
+39 5 | opóźnien
+39 6 | ie od dnia
+39 7 |
+39 8 | 15
+39 9 |  czerwca
+39 10 |
+39 11 |  202
+39 12 | 2
+39 13 |  r. do dnia zapłaty
+40 0 | koszty nadania klauzuli wykonalności w kwocie
+40 1 | 120,00 zł
+41 0 | koszty
+41 1 |  adwokackie w postępowaniu egzekucyjnym w kwocie
+41 2 |
+41 3 | 45
+41 4 | 0
+41 5 | ,
+41 6 | 0
+41 7 | 0
+41 8 |  zł
+43 0 | Wnoszę o :
+44 0 | wszczęcie egzekucji
+44 1 |  z rachunków bankowych dłużnika
+44 2 | ;
+45 0 | wszczęcie
+45 1 | egzekucji z ruchomości dłużnika znajdujących się w miejscu jego
+45 2 |  zamieszkania – poprzez ich zajęcie i sprzedaż w drodze licytacji w celu wyegzekwowania powyższych kwot ;
+46 0 | wszczęcie egzekucji z wynagrodzenia dłużnik
+46 1 | a
+47 0 | wszczęcie egzekucji z innych
+47 1 |  praw i wierzytelności dłużnika
+48 0 | ustalenie oraz ściągnięcie wraz z egzekwowanym roszczeniem i wypłacenie wierzycielowi  kosztów egzekucji według norm przepisanych
+48 1 | łącznie z należnymi kosztami adwokackimi dla radcy prawnego.
+50 0 | Wpłat na rzecz wierzyciela proszę dokonać na jego konto bankowe:
+51 0 | Miejskie Przedsiębiorstwo Gospodarki Nieruchomościami sp. z o.o. w Grudziądzu
+52 0 |  B.G.Ż S.A. O/Grudziądz
+53 0 | 34 2030 0045 1110 0000 0075 0370
+55 0 | Natomiast
+55 1 | koszty zastępstwa w postę
+55 2 | powaniu sądowym w kwocie
+55 3 | 12
+55 4 | 0
+55 5 | 0
+55 6 | ,00
+55 7 |  zł
+55 8 |  wraz z ustawowymi odsetkami za opóźnienie liczonymi  od w/w kwoty
+55 9 | , koszty nadania klauzuli wykonalności w kwocie 120,00 zł
+55 10 |
+55 11 | i
+55 12 | koszty zastępstwa w postępowaniu
+55 13 | egzekucyjnym
+55 14 |
+55 15 |  w kw
+55 16 | oc
+55 17 | ie
+55 18 | 45
+55 19 | 0
+55 20 | ,00
+55 21 |  zł
+55 22 |
+55 23 |  proszę przekazać na konto pełnom
+55 24 | ocnika z
+55 25 |  podaniem
+55 26 | znaku:   M/
+55 27 | 111
+55 28 | /
+55 29 | 2
+55 30 | 2
+55 31 | .
+56 0 | Kancelaria Radcy Prawnego „Doradca” Stanisław
+56 1 | Wajsgerber
+57 0 | Bank PKO S.A. O/ Grudziądz
+58 0 | 44 1240 1949 1111 0010 1569 9023
+59 0 |
+59 1 |
+59 2 |
+59 3 |
+59 4 |
+59 5 |
+59 6 |
+59 7 |
+59 8 |  radca prawny
+60 0 |
+60 1 |
+60 2 |
+60 3 |
+60 4 |
+60 5 |
+60 6 |
+60 7 |
+60 8 |  Stanisław
+60 9 | Wajsgerber
+61 0 | Załączniki
+62 0 | 1.
+62 1 |
+62 2 | tytuł wykonawczy
+63 0 | 2.
+63 1 |
+63 2 | odpis pełnomocnictwa
+64 0 | Otrzymują:
+65 0 | Adresat – 1 egz.
+66 0 | A/a – 1 egz.

@@ -96,15 +96,15 @@ def person(request, pk=0):
                     }
                 )
             cases = Case.objects.filter(Q(accused_persons__pk=pk) | Q(prosecutor_persons__pk=pk))
-            new_case_form = CaseForm(
-                initial={
-                    'accused_persons': find
-                }
-            )
+            # new_case_form = CaseForm(
+            #     initial={
+            #         'accused_persons': find
+            #     }
+            # )
             context = {
                 'person': find,
                 'family': ff,
-                'new_case': new_case_form,
+                # 'new_case': new_case_form,
                 'simple_case_form': SimpleCaseCreateForm,
                 'cases': cases,
                 'next_signatures': signatures.next_signature(),
@@ -162,11 +162,11 @@ def case(request, pk=0):
             pk = case.pk
     if request.method == 'GET' and pk:
         if selected_case := Case.objects.get(pk=pk):
-            if bailiff_id := request.GET.get('bailiff'):
-                selected_bailiff = Bailiff.objects.get(pk=bailiff_id)
-                selected_case.bailiff = selected_bailiff
-                selected_case.result = Case.RESULT[4][0]
-                selected_case.save()
+            # if bailiff_id := request.GET.get('bailiff'):
+            #     selected_bailiff = Bailiff.objects.get(pk=bailiff_id)
+            #     selected_case.bailiff = selected_bailiff
+            #     selected_case.result = Case.RESULT[4][0]
+            #     selected_case.save()
             context = {'case': selected_case, 'refund': Refund.objects.filter(case__pk=pk).first()}
             if context['refund']:
                 context['form'] = PaymentCreateForm(initial={'refund': context['refund']})
@@ -175,7 +175,8 @@ def case(request, pk=0):
                 context['form'] = RefundCreateForm(initial={'case': context['case']})
             if court := Court.objects.filter(case__pk=pk):
                 context['court'] = court.first()
-                context['assign_bailiff_form'] = CaseAssignBailiffForm()
+                if not selected_case.bailiff:
+                    context['assign_bailiff_form'] = CaseAssignBailiffForm()
             else:
                 context['cort_reference_number_form'] = CaseCourtReferenceForm({'pk': selected_case.pk})
             return render(request, 'case/selected.html', context)
@@ -186,16 +187,21 @@ def case(request, pk=0):
     return render(request, 'case/list.html', context)
 
 
-def case_update_court_reference_number(request):
-    if pk := request.GET.get('pk', 0):
+def case_update_court_reference_number(request, case_id = 0):
+    if pk := request.GET.get('pk', case_id):
         if case_selected := Case.objects.get(pk=pk):
             if reference_number := request.GET.get('court_reference_number', None):
                 result = Portal.get_case_by_court_reference_number(reference_number)
                 result_dict = json.dumps(result[0])
-                x = json.loads(result_dict)
+                portal_response = json.loads(result_dict)
                 court = Court()
                 court.case = case_selected
-                court.init(portal_response=x)
+                court.init(portal_response=portal_response)
+                if court.finish_date:
+                    case_selected.result = 'won'
+                else:
+                    case_selected.result = 'begin'
+                case_selected.save()
                 court.save()
     return redirect('register:case', pk=pk)
 
@@ -230,6 +236,7 @@ def case_bailiff_assign(request):
             found_bailiff = Bailiff.objects.get(pk=bailiff_id)
             if found_bailiff:
                 found_case.bailiff = found_bailiff
+                found_case.result = Case.RESULT[4][0]
                 found_case.save()
                 return redirect('register:case', pk=case_id)
     return redirect('register:case')

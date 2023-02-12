@@ -24,7 +24,7 @@
                   <th scope="row">1</th>
                   <td>{{ case.signature }}</td>
                   <td>{{ case.gat_type_display }}</td>
-                  <td>{{ case.result }}</td>
+                  <td>{{ case.get_result_display }}</td>
                   <td>{{ case.create_date|localize }}</td>
                   {% if case.bailiff %}
                     <td>{{ case.bailiff }}</td>
@@ -52,8 +52,8 @@
                 <div class="d-flex justify-content-around">
                 <div class="h4">powód</div>
                 <div>
-                    <button id="prosecutor_person" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#prosecutor_person_modal">dodaj osobę </button>
-                    <button id="prosecutor_company" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#prosecutor_company_modal">dodaj firmę<i class="ri-add-fill"></i> </button>
+                    <button id="prosecutor_person" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#prosecutor_person_modal">dodaj osobę <i class="ri-add-fill"></i></button>
+                    <button id="prosecutor_company" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#prosecutor_company_modal">dodaj firmę <i class="ri-add-fill"></i> </button>
                 </div>
                 </div>
         </div>
@@ -104,16 +104,21 @@
                 <p>{{ court.subject }}</p>
             </div>
             <div class="col"></div>
-            {% if assign_bailiff_form %}
+
             <div class="col">
+            {% if assign_bailiff_form %}
                 <form action="{% url 'register:bailiff_assign' %}" method="GET">
                     {% csrf_token %}
                     <input type="hidden" name="case_id" value="{{ case.id }}">
                     {{ assign_bailiff_form }}
                     <button class="btn btn-primary">przypisz komornika</button>
                 </form>
-            </div>
+            {% else %}
+                <p>komornik</p>
+                {{ case.bailiff }}
             {% endif %}
+            </div>
+
 
         </div>
 
@@ -144,7 +149,7 @@
     <div class="card-body">
         <h5 class="card-title">Koszty sprawy </h5>
         <h5 class="d-inline">{{ refund }}</h5>
-        <a href="{% url 'payments:enforcement_request' %}" class="btn btn-primary m-2">wygeneruj dokument wszczęcia egzekucji</a>
+        <a href="{% url 'payments:enforcement_request' case.id %}" class="btn btn-primary m-2">wygeneruj dokument wszczęcia egzekucji</a>
         <table class="table">
             <thead>
             <tr>

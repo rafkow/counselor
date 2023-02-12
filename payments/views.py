@@ -30,11 +30,15 @@ def payment(request):
     return Http404("nie przesłano prawidłowego formularza")
 
 
-def generate_enforcement_request(request):
+def generate_enforcement_request(request, case_id):
     document = Document('payments/resources/wszczecie_egzekucji_copy.docx')
-    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-    response['Content-Disposition'] = 'attachment; filename=download.docx'
-    document.save(response)
+    if selected_case:= Case.objects.get(id=case_id):
+        for i, p in enumerate(document.paragraphs):
+            for j, r in enumerate(p.runs):
+                print(f"{i} {j} | {r.text}")
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+        response['Content-Disposition'] = f'attachment; filename=wszczęcie_egzekucji_{selected_case.signature}.docx'
+        document.save(response)
 
     return response
 

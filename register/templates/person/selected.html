@@ -10,18 +10,18 @@
             <div class="card-body">
             <h5 class="card-title">Dane</h5>
                 <div class="row">
-                <div class="col-4">imie</div>
+                <div class="col-4">imię</div>
                 <div class="col-8">{{ person.first_name }}</div>
                 <div class="col-4">nazwisko</div>
                 <div class="col-8">{{ person.last_name }}</div>
                 <div class="col-4">pesel</div>
-                <div class="col-8">{{ person.pesel }}</div>
+                <div class="col-8">{% if person.pesel %}{{ person.pesel }} {% endif %}</div>
                 <div class="col-4">telefon</div>
-                <div class="col-8">{{ person.phone }}</div>
+                <div class="col-8">{% if person.phone %} {{ person.phone }} {% endif %}</div>
                 <div class="col-4">adres</div>
-                <div class="col-8">{{ person.street }}</div>
+                <div class="col-8">{% if person.street %} {{ person.street }} {% endif %}</div>
                 <div class="col-4"></div>
-                <div class="col-8">{{ person.postcode }} {{ person.city }}</div>
+                <div class="col-8">{% if person.street %} {{ person.postcode }} {{ person.city }} {% endif %}</div>
                 </div>
             </div>
         </div>
@@ -40,25 +40,28 @@
                 </form>
             </div>
         </div>
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Nowa sprawa</h5>
-                {% for sign in next_signatures %}
-                    <span class="badge border-primary text-primary sign_val">{{ sign }}</span>
-                {% endfor %}
-                <form action="{% url 'register:case' %}" method="POST">
-                    {% csrf_token %}
-                    {{ new_case }}
-                <button type="submit" class="btn btn-primary my-3">Utwórz</button>
-                </form>
-            </div>
-        </div>
+<!--        <div class="card">-->
+<!--            <div class="card-body">-->
+<!--                <h5 class="card-title">Nowa sprawa</h5>-->
+<!--                {% for sign in next_signatures %}-->
+<!--                    <span class="badge border-primary text-primary sign_val">{{ sign }}</span>-->
+<!--                {% endfor %}-->
+<!--                <form action="{% url 'register:case' %}" method="POST">-->
+<!--                    {% csrf_token %}-->
+<!--                    {{ new_case }}-->
+<!--                <button type="submit" class="btn btn-primary my-3">Utwórz</button>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </div>-->
     </div>
 
     <div class="col-7">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Nowa sprawa</h4>
+                {% for sign in next_signatures %}
+                    <span class="badge border-primary text-primary sign_val">{{ sign }}</span>
+                {% endfor %}
                 <form action="{% url 'register:case' %}" method="get">
                 <input name="person_id" type="hidden" value="{{ person.id }}">
                 {{ simple_case_form }}

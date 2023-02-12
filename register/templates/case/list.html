@@ -13,7 +13,7 @@
   <tbody>
 {% for p in cases %}
 <tr>
-  <td><p>{{ p.id }}</p></td> <td><p>{{ p }}</p> </td> <td>{{ p.result }}</td> <td> {{ p.get_type_display }}</td>
+  <td><p>{{ p.id }}</p></td> <td><p>{{ p }}</p> </td> <td>{{ p.get_result_display }}</td> <td> {{ p.get_type_display }}</td>
   <td><a href="{% url 'register:case' p.id  %}" class="p"> szczegóły </a></td>
 </tr>
 {% endfor %}
@@ -33,6 +33,8 @@
       searching: true,
       "paging":   true,
       "ordering": true,
+      "pageLength": 15,
+      "lengthMenu": [[15, 25, 50, 100, 500],[15, 25, 50, 100, 500]],
       "info":     true
     });
     $('#search-input').keyup(function(){

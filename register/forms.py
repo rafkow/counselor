@@ -16,6 +16,9 @@ class PersonCreateFrom(forms.ModelForm):
             'pesel': TextInput(attrs={'class': 'form-control'}),
             'address': TextInput(attrs={'class': 'form-control'}),
             'phone': TextInput(attrs={'class': 'form-control'}),
+            'street': TextInput(attrs={'class': 'form-control'}),
+            'city': TextInput(attrs={'class': 'form-control'}),
+            'postcode': TextInput(attrs={'class': 'form-control'}),
             'note': Textarea(attrs={'class': 'form-control'}),
         }
 
