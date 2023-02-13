@@ -99,6 +99,7 @@ class BailiffCreateForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'name': TextInput(attrs={'class': 'form-control'}),
+            'office_name': TextInput(attrs={'class': 'form-control'}),
             'street': TextInput(attrs={'class': 'form-control'}),
             'city': TextInput(attrs={'class': 'form-control'}),
             'postcode': TextInput(attrs={'class': 'form-control'})}
@@ -111,9 +112,10 @@ class ImportDataForm(forms.Form):
 class CompanyCreateForm(forms.ModelForm):
     class Meta:
         model = Company
-        fields = ['name', 'nip']
+        fields = ['name', 'nip', 'krs']
         widgets = {
             'name': TextInput(attrs={'class': 'form-control'}),
+            'krs': TextInput(attrs={'class': 'form-control'}),
             'nip': NumberInput(attrs={'class': 'form-control'}),
         }
 

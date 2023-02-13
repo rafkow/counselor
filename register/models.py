@@ -26,7 +26,8 @@ class Family(models.Model):
 
 class Company(models.Model):
     name = models.CharField(max_length=200, null=True, blank=True, verbose_name='pełna nazwa podmiotu gospodarczego')
-    nip = models.IntegerField(null=True, blank=True, verbose_name='nip')
+    nip = models.PositiveBigIntegerField(null=True, blank=True, verbose_name='nip')
+    krs = models.CharField(max_length=10, null=True, blank=True)
     description = models.CharField(max_length=300, null=True, blank=True, verbose_name='notatki')
     date_created = models.DateTimeField(auto_now_add=True)
 
@@ -37,6 +38,7 @@ class Company(models.Model):
 # Komornik sądowy
 class Bailiff(models.Model):
     name = models.CharField(max_length=60, verbose_name="imię i nazwisko")
+    office_name = models.CharField(max_length=200, verbose_name='nazwa kancelarii', default='')
     street = models.CharField(max_length=60, default='', verbose_name='ulica')
     city = models.CharField(max_length=60, default="Grudziądz", verbose_name='miejscowość')
     postcode = models.CharField(max_length=60, default='86-300', verbose_name='kod pocztowy')

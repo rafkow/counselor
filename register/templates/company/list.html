@@ -17,12 +17,13 @@
                 {% csrf_token %}
 
                 <div class="row">
-                    {% for field in new_company %}
-                    <div class="col-4">
-                        {{ field.label }}
-                        {{ field }}
-                    </div>
-                    {% endfor%}
+                    {{ new_company.as_p }}
+<!--                    {% for field in new_company %}-->
+<!--                    <div class="col-4">-->
+<!--                        {{ field.label }}-->
+<!--                        {{ field }}-->
+<!--                    </div>-->
+<!--                    {% endfor%}-->
                     <div class="col-2">
                         Zatwierdź
                         <button type="submit" class="btn btn-primary w-100">dodaj firmę</button>
