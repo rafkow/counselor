@@ -64,11 +64,11 @@ class Case(models.Model):
                                  )
     accused_persons = models.ManyToManyField(Person, related_name='accused_persons',
                                              verbose_name='osoby oskarżone w sprawie')
-    accused_companies = models.ManyToManyField(Company, related_name='accused_companies')
-    prosecutor_persons = models.ManyToManyField(Person, related_name='prosecutor_persons')
-    prosecutor_companies = models.ManyToManyField(Company, related_name='prosecutor_companies')
+    accused_companies = models.ManyToManyField(Company, related_name='accused_companies',  blank=True)
+    prosecutor_persons = models.ManyToManyField(Person, related_name='prosecutor_persons', blank=True)
+    prosecutor_companies = models.ManyToManyField(Company, related_name='prosecutor_companies', blank=True)
     type = models.CharField(max_length=60, choices=TYPE, null=True, blank=True, verbose_name='typ sprawy', default=None)
-    result = models.CharField(max_length=60, choices=RESULT, default=RESULT[0][0], verbose_name='wynik sprawy')
+    result = models.CharField(max_length=60, choices=RESULT, default=RESULT[0][0], verbose_name='wynik: sprawy')
     create_date = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     bailiff = models.ForeignKey(Bailiff, null=True, blank=True, verbose_name='komornik', on_delete=models.SET_NULL,
