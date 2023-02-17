@@ -13,7 +13,6 @@ urlpatterns = [
     path('case/', views.case, name='case'),
     path('case/<int:pk>', views.case, name='case'),
     path('case/court_info/<int:pk>', views.case_court_info, name='court_info'),
-    # path('case/edit/<int:pk>', views.case_edit, name='case_edit'),
     path('case/court_reference_number', views.case_update_court_reference_number, name='court_reference_number'),
     path('case/bailiff_assign', views.case_bailiff_assign, name="bailiff_assign"),
     path('register/family', views.family, name='family'),

@@ -1,4 +1,4 @@
-from django.forms import Textarea, TextInput, SelectMultiple, Select, NumberInput
+from django.forms import Textarea, TextInput, SelectMultiple, Select, NumberInput, HiddenInput
 from django import forms
 from .models import *
 
@@ -41,6 +41,16 @@ class CaseForm(forms.ModelForm):
             'type': Select(attrs={'class': 'form-control'}),
             'description': Textarea(attrs={'class': 'form-control'}),
             'accused_persons': SelectMultiple(attrs={'class': 'form-control'})
+        }
+
+
+class CaseNoteForm(forms.ModelForm):
+    class Meta:
+        model = Case
+        fields = ['id', 'description']
+
+        widgets = {
+            'description': Textarea(attrs={'class': 'form-control'})
         }
 
 

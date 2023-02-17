@@ -190,6 +190,19 @@
 </div>
 {% endif %}
 
+<div class="card">
+    <div class="card-body">
+        <form method="POST">
+            <div class="row">
+                <div class="col-2"><h5 class="card-title">Notatka do sprawy {{ case.signature }} </h5></div>
+                <div class="col"><button class="btn btn-primary mt-3" type="submit">zapisz notatkę <i class="bi bi-chat-left-text"></i></button></div>
+            </div>
+                {% csrf_token %}
+                {{ case_note_form }}
+        </form>
+
+    </div>
+</div>
 
 
 

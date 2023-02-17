@@ -141,6 +141,13 @@ def person_update(request, pk):
 
 def case(request, pk=0):
     if request.method == 'POST':
+        if pk:
+            if selected_case := Case.objects.get(pk=pk):
+                form = CaseNoteForm(request.POST, instance=selected_case)
+                print('jestem w case')
+                if form.is_valid():
+                    form.save()
+                return redirect("register:case", pk=selected_case.id)
         form = CaseForm(request.POST)
         if form.is_valid():
             person_id = form.cleaned_data.get('accused_persons').first().id
@@ -179,6 +186,7 @@ def case(request, pk=0):
                     context['assign_bailiff_form'] = CaseAssignBailiffForm()
             else:
                 context['cort_reference_number_form'] = CaseCourtReferenceForm({'pk': selected_case.pk})
+            context['case_note_form'] = CaseNoteForm(instance=selected_case)
             return render(request, 'case/selected.html', context)
 
     context = {

@@ -10,7 +10,7 @@ class Person(models.Model):
     street = models.CharField(max_length=60, default='', verbose_name='ulica')
     city = models.CharField(max_length=60, default="Grudziądz", verbose_name='miejscowość')
     postcode = models.CharField(max_length=60, default='86-300', verbose_name='kod pocztowy')
-    note = models.CharField(max_length=30, null=True, blank=True, verbose_name='notatka')
+    note = models.CharField(max_length=200, null=True, blank=True, verbose_name='notatka')
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
