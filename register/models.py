@@ -80,15 +80,15 @@ class Case(models.Model):
 
 
 class Court(models.Model):
-    case = models.ForeignKey(Case, verbose_name='sprawa', on_delete=models.CASCADE, null=False)
+    case = models.ForeignKey(Case, verbose_name='sprawa', on_delete=models.CASCADE, null=False, related_name='court')
     court_id = models.IntegerField()
     signature = models.CharField(max_length=15)
     court_name = models.CharField(max_length=150)
-    receipt_date = models.DateTimeField(verbose_name="data wpłynięcia sprawy")
-    finish_date = models.DateTimeField(verbose_name="data zakończenia rozprawy", null=True)
+    receipt_date = models.DateTimeField(verbose_name="data wpłynięcia sprawy", null=True)
+    finish_date = models.DateTimeField(verbose_name="data zakończenia rozprawy", null=True, blank=True)
     judge_name = models.CharField(max_length=150)
     subject = models.CharField(max_length=100)
-    description = models.CharField(max_length=150, null=True)
+    description = models.CharField(max_length=150, null=True, blank=True)
 
     def init(self, portal_response=None):
         if portal_response:
@@ -103,6 +103,17 @@ class Court(models.Model):
 
     def __str__(self):
         return f"{self.signature}"
+
+    def __lt__(self, other):
+        if self.finish_date:
+            return False
+        if isinstance(other, Court):
+            if other.finish_date:
+                return True
+        return False
+
+
+# return comparison
 
 
 class Firstnames(models.Model):

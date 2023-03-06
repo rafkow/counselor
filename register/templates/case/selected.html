@@ -95,10 +95,10 @@
                 <p>{{ court.signature }}</p>
                 <p>{{ court.court_name }}</p>
                 <p>{{ court.receipt_date }}</p>
-                {% if cort.finish_date %}
-                <p>{{ court.finish_date }}</p>
+                {% if court.finish_date %}
+                    <p>{{ court.finish_date }}</p>
                 {% else %}
-                <p>sprawa jeszcze nie zakonczona</p>
+                    <p>sprawa jeszcze nie zakonczona</p>
                 {% endif %}
                 <p>{{ court.judge_name }}</p>
                 <p>{{ court.subject }}</p>
@@ -107,7 +107,7 @@
 
             <div class="col">
             {% if assign_bailiff_form %}
-                <form action="{% url 'register:bailiff_assign' %}" method="GET">
+                <form action="{% url 'register:bailiff_assign' %}" method="get">
                     {% csrf_token %}
                     <input type="hidden" name="case_id" value="{{ case.id }}">
                     {{ assign_bailiff_form }}
@@ -129,8 +129,8 @@
 {% if not refund %}
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title"> Zadeklaruj koszty sprawy <i class="ri-add-fill"></i> </h5>
-        <form action="{% url 'payments:refund' %}" method="POST">
+        <h5 class="card-title"> zadeklaruj koszty sprawy <i class="ri-add-fill"></i> </h5>
+        <form action="{% url 'payments:refund' %}" method="post">
             {% csrf_token %}
             <div class="row">
             {% for field in form %}
@@ -140,14 +140,14 @@
             </div>
             {% endfor %}
             </div>
-            <button type="submit" class="btn btn-primary my-3">Utwórz</button>
+            <button type="submit" class="btn btn-primary my-3">utwórz</button>
         </form>
     </div>
 </div>
 {% else %}
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title">Koszty sprawy </h5>
+        <h5 class="card-title">koszty sprawy </h5>
         <h5 class="d-inline">{{ refund }}</h5>
         <a href="{% url 'payments:enforcement_request' case.id %}" class="btn btn-primary m-2">wygeneruj dokument wszczęcia egzekucji</a>
         <table class="table">
@@ -192,9 +192,9 @@
 
 <div class="card">
     <div class="card-body">
-        <form method="POST">
+        <form method="post">
             <div class="row">
-                <div class="col-2"><h5 class="card-title">Notatka do sprawy {{ case.signature }} </h5></div>
+                <div class="col-2"><h5 class="card-title">notatka do sprawy {{ case.signature }} </h5></div>
                 <div class="col"><button class="btn btn-primary mt-3" type="submit">zapisz notatkę <i class="bi bi-chat-left-text"></i></button></div>
             </div>
                 {% csrf_token %}
@@ -206,15 +206,15 @@
 
 
 
-<!-- Modal -->
-<div class="modal fade" id="payment_modal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+<!-- modal -->
+<div class="modal fade" id="payment_modal" tabindex="-1" aria-labelledby="paymentmodallabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Spłata</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title">spłata</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
       </div>
-        <form action="{% url 'payments:payment' %}" method="POST">
+        <form action="{% url 'payments:payment' %}" method="post">
       <div class="modal-body">
             {% csrf_token %}
             {{ form }}
@@ -228,77 +228,77 @@
   </div>
 </div>
 
-<div class="modal fade" id="accused_person_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="accused_person_modal" tabindex="-1" aria-labelledby="examplemodallabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="accused_person_modal_label">Przypisz pozwanego so sprawy</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title" id="accused_person_modal_label">przypisz pozwanego so sprawy</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
       </div>
       <div class="modal-body">
         <table id="accused_persons_table" class="table w-100">
         </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">close</button>
+        <button type="button" class="btn btn-primary">save changes</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="modal fade" id="accused_company_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="accused_company_modal" tabindex="-1" aria-labelledby="examplemodallabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="accused_company_modal_label">Przypisz pozwanego so sprawy</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title" id="accused_company_modal_label">przypisz pozwanego so sprawy</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
       </div>
       <div class="modal-body">
         <table id="accused_company_table" class="table w-100">
         </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">close</button>
+        <button type="button" class="btn btn-primary">save changes</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="modal fade" id="prosecutor_company_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="prosecutor_company_modal" tabindex="-1" aria-labelledby="examplemodallabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="prosecutor_company_modal_label">Przypisz pozwanego so sprawy</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title" id="prosecutor_company_modal_label">przypisz pozwanego so sprawy</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
       </div>
       <div class="modal-body">
         <table id="prosecutor_company_table" class="table w-100">
         </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">close</button>
+        <button type="button" class="btn btn-primary">save changes</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="modal fade" id="prosecutor_person_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="prosecutor_person_modal" tabindex="-1" aria-labelledby="examplemodallabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="prosecutor_person_modal_label">Przypisz pozwanego so sprawy</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title" id="prosecutor_person_modal_label">przypisz pozwanego so sprawy</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
       </div>
       <div class="modal-body">
         <table id="prosecutor_person_table" class="table w-100">
         </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">close</button>
+        <button type="button" class="btn btn-primary">save changes</button>
       </div>
     </div>
   </div>
@@ -315,7 +315,7 @@ $('#accused_person').on('click', function() {
         {
             success: function (data, status, xhr) {// success callback function
                 accused_person_exist = true;
-                $('#accused_persons_table').DataTable( {
+                $('#accused_persons_table').datatable( {
                     "data" : data,
                     "dom": '<"top"f>rt<"bottom"i><"clear">',
                     "columns" : [
@@ -338,7 +338,7 @@ $('#accused_company').on('click', function() {
         {
             success: function (data, status, xhr) {// success callback function
                 accused_company_exist = true;
-                $('#accused_company_table').DataTable( {
+                $('#accused_company_table').datatable( {
                     "data" : data,
                     "dom": '<"top"f>rt<"bottom"i><"clear">',
                     "columns" : [
@@ -361,7 +361,7 @@ $('#prosecutor_person').on('click', function() {
         {
             success: function (data, status, xhr) {// success callback function
                 prosecutor_person_exist = true;
-                $('#prosecutor_person_table').DataTable( {
+                $('#prosecutor_person_table').datatable( {
                     "data" : data,
                     "dom": '<"top"f>rt<"bottom"i><"clear">',
                     "columns" : [
@@ -384,7 +384,7 @@ $('#prosecutor_company').on('click', function() {
         {
             success: function (data, status, xhr) {// success callback function
                 prosecutor_company_exist = true;
-                $('#prosecutor_company_table').DataTable( {
+                $('#prosecutor_company_table').datatable( {
                     "data" : data,
                     "dom": '<"top"f>rt<"bottom"i><"clear">',
                     "columns" : [

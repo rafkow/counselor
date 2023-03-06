@@ -169,19 +169,16 @@ def case(request, pk=0):
             pk = case.pk
     if request.method == 'GET' and pk:
         if selected_case := Case.objects.get(pk=pk):
-            # if bailiff_id := request.GET.get('bailiff'):
-            #     selected_bailiff = Bailiff.objects.get(pk=bailiff_id)
-            #     selected_case.bailiff = selected_bailiff
-            #     selected_case.result = Case.RESULT[4][0]
-            #     selected_case.save()
+            if selected_case.result == 'begin':
+                court_refresh(pk)
             context = {'case': selected_case, 'refund': Refund.objects.filter(case__pk=pk).first()}
             if context['refund']:
                 context['form'] = PaymentCreateForm(initial={'refund': context['refund']})
                 context['payments'] = Payments.objects.filter(refund__pk=context['refund'].pk)
             else:
                 context['form'] = RefundCreateForm(initial={'case': context['case']})
-            if court := Court.objects.filter(case__pk=pk):
-                context['court'] = court.first()
+            if court := Court.objects.get(case__pk=pk):
+                context['court'] = court
                 if not selected_case.bailiff:
                     context['assign_bailiff_form'] = CaseAssignBailiffForm()
             else:
@@ -212,6 +209,22 @@ def case_update_court_reference_number(request, case_id = 0):
                 case_selected.save()
                 court.save()
     return redirect('register:case', pk=pk)
+
+
+def court_refresh(case_id):
+    if court := Case.objects.get(pk=case_id).court.get():
+        if not court.finish_date:
+            result = Portal.get_case_by_court_reference_number(court.signature)
+            result_dict = json.dumps(result[0])
+            portal_response = json.loads(result_dict)
+            result_court = Court()
+            result_court.init(portal_response=portal_response)
+            if court < result_court:
+                court.finish_date = result_court.finish_date
+                court.save()
+                selected_case = Case.objects.get(pk=case_id)
+                selected_case.result = 'won'
+                selected_case.save()
 
 
 def case_court_info(request, pk=0):
