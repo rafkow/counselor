@@ -96,11 +96,7 @@ def person(request, pk=0):
                     }
                 )
             cases = Case.objects.filter(Q(accused_persons__pk=pk) | Q(prosecutor_persons__pk=pk))
-            # new_case_form = CaseForm(
-            #     initial={
-            #         'accused_persons': find
-            #     }
-            # )
+
             context = {
                 'person': find,
                 'family': ff,
@@ -177,8 +173,8 @@ def case(request, pk=0):
                 context['payments'] = Payments.objects.filter(refund__pk=context['refund'].pk)
             else:
                 context['form'] = RefundCreateForm(initial={'case': context['case']})
-            if court := Court.objects.get(case__pk=pk):
-                context['court'] = court
+            if court := Court.objects.filter(case__pk=pk):
+                context['court'] = court.first()
                 if not selected_case.bailiff:
                     context['assign_bailiff_form'] = CaseAssignBailiffForm()
             else:

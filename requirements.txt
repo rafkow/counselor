@@ -14,3 +14,4 @@ requests
 sqlparse==0.4.2
 urllib3==1.26.12
 gunicorn
+python-dotenv

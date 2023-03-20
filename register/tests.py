@@ -1,3 +1,6 @@
 from django.test import TestCase
 
-# Create your tests here.
+class TestingTest(TestCase):
+    def TestOfTest(self):
+        self.assertFalse(False)
+
